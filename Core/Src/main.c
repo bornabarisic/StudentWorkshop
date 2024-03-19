@@ -51,6 +51,7 @@ ADC_HandleTypeDef hadc1;
 void SystemClock_Config(void);
 static void MX_GPIO_Init(void);
 static void MX_ADC1_Init(void);
+void LED_control_with_ADC(void);
 /* USER CODE BEGIN PFP */
 
 /* USER CODE END PFP */
@@ -99,23 +100,9 @@ int main(void)
   while (1)
   {
     /* USER CODE END WHILE */
-	  HAL_ADC_Start(&hadc1);
 
-	  HAL_ADC_PollForConversion(&hadc1, 1000);
-	  readVal = HAL_ADC_GetValue(&hadc1);
-
-	  HAL_ADC_Stop(&hadc1);
-
-	  // log e (x)
-//	  delay_factor = 0.01 + 0.119*log10((1 + (double)readVal));
-	  // log 10 (x)
-//	  delay_factor = 0.01 + 0.27406*log10((1 + (double)readVal));
-	  // exponential
-	  delay_factor = 0.1 * pow(1.0005623126, (double)readVal);
-	  HAL_Delay(1000*delay_factor);
-
-	  HAL_GPIO_TogglePin(LD2_GPIO_Port, LD2_Pin);
     /* USER CODE BEGIN 3 */
+	LED_control_with_ADC();
   }
   /* USER CODE END 3 */
 }
@@ -289,7 +276,29 @@ static void MX_GPIO_Init(void)
 }
 
 /* USER CODE BEGIN 4 */
+/**
+  * @brief  This function is makes the LED blink with the frequency set by the potentiometer using ADC.
+  * @retval None
+  */
+void LED_control_with_ADC (void)
+{
+	HAL_ADC_Start(&hadc1);
 
+	HAL_ADC_PollForConversion(&hadc1, 1000);
+	readVal = HAL_ADC_GetValue(&hadc1);
+
+	HAL_ADC_Stop(&hadc1);
+
+	// log e (x)
+	//	  delay_factor = 0.01 + 0.119*log10((1 + (double)readVal));
+	// log 10 (x)
+	//	  delay_factor = 0.01 + 0.27406*log10((1 + (double)readVal));
+	// exponential
+	delay_factor = 0.1 * pow(1.0005623126, (double)readVal);
+	HAL_Delay(1000*delay_factor);
+
+	HAL_GPIO_TogglePin(LD2_GPIO_Port, LD2_Pin);
+}
 /* USER CODE END 4 */
 
 /**
