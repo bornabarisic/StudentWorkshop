@@ -1,0 +1,2 @@
+../Core/Src/ADC_IF.c:28:6:MX_ADC1_Init	24	static
+../Core/Src/ADC_IF.c:79:6:LED_control_with_ADC	8	static
