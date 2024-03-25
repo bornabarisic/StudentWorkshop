@@ -18,7 +18,7 @@
 #define LD2_GPIO_Port GPIOA
 
 // Function prototypes
-void MX_ADC1_Init(void);
+void ADC1_Init(void);
 void LED_control_with_ADC(void);
 
 #ifdef __cplusplus

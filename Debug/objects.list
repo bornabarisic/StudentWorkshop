@@ -1,4 +1,7 @@
-"./Core/Src/ADC_IF.o"
+"./Core/Src/LCD/lcd_driver.o"
+"./Core/Src/LCD/lcd_i2c.o"
+"./Core/Src/LCD/lcd_interface.o"
+"./Core/Src/adc_if.o"
 "./Core/Src/main.o"
 "./Core/Src/stm32f4xx_hal_msp.o"
 "./Core/Src/stm32f4xx_it.o"

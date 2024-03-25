@@ -1,2 +1,3 @@
-../Core/Src/ADC_IF.c:28:6:MX_ADC1_Init	3
-../Core/Src/ADC_IF.c:79:6:LED_control_with_ADC	1
+../Core/Src/adc_if.c:29:6:ADC1_Init_Pins	2
+../Core/Src/adc_if.c:53:6:ADC1_Init	3
+../Core/Src/adc_if.c:94:6:LED_control_with_ADC	1

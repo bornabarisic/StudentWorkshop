@@ -1,0 +1,6 @@
+../Core/Src/LCD/lcd_driver.c:60:12:SendToLCD	24	static
+../Core/Src/LCD/lcd_driver.c:89:13:InitializeLCD	16	static
+../Core/Src/LCD/lcd_driver.c:119:12:SendDataToLCD	16	static
+../Core/Src/LCD/lcd_driver.c:143:12:MoveLCDCursor	24	static
+../Core/Src/LCD/lcd_driver.c:176:12:ClearLCD	16	static
+../Core/Src/LCD/lcd_driver.c:194:8:GetLCDInterface	4	static

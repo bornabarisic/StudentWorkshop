@@ -6,9 +6,9 @@
 */
 
 // Includes
+#include "adc_if.h"
 #include "math.h"
 #include "stm32f4xx_hal.h"
-#include "ADC_IF.h"
 
 // Private variables
 static uint16_t readVal;
@@ -21,13 +21,40 @@ void Error_Handler(void);
 // Function definitions
 
 /**
+* @brief ADC Pins Initialization
+* This function configures the hardware resources for ADC1
+* @param hadc: ADC handle pointer
+* @retval None
+*/
+void ADC1_Init_Pins(ADC_HandleTypeDef* hadc)
+{
+  GPIO_InitTypeDef GPIO_InitStruct = {0};
+  if(hadc->Instance==ADC1)
+  {
+    /* Peripheral clock enable */
+    __HAL_RCC_ADC1_CLK_ENABLE();
+
+    __HAL_RCC_GPIOA_CLK_ENABLE();
+    /**ADC1 GPIO Configuration
+    PA1     ------> ADC1_IN1
+    */
+    GPIO_InitStruct.Pin = GPIO_PIN_1;
+    GPIO_InitStruct.Mode = GPIO_MODE_ANALOG;
+    GPIO_InitStruct.Pull = GPIO_NOPULL;
+    HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
+  }
+}
+
+/**
   * @brief ADC1 Initialization Function
   * @param None
   * @retval None
   */
-void MX_ADC1_Init(void)
+void ADC1_Init(void)
 {
   ADC_ChannelConfTypeDef sConfig = {0};
+
+  ADC1_Init_Pins(&hadc1);
 
   /** Configure the global features of the ADC (Clock, Resolution, Data Alignment and number of conversion)
   */
@@ -58,6 +85,7 @@ void MX_ADC1_Init(void)
     Error_Handler();
   }
 }
+
 
 /**
   * @brief  This function makes the LED blink with the frequency set by the potentiometer using ADC.
