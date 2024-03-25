@@ -105,10 +105,10 @@ int main(void)
   while (1)
   {
     /* USER CODE END WHILE */
-	char pdata[14] = "Prikaz";
-	LCDWriteData(0,0,&pdata[0]);
+
+	LCD_control_with_ADC();
     /* USER CODE BEGIN 3 */
-	LED_control_with_ADC();
+
   }
   /* USER CODE END 3 */
 }

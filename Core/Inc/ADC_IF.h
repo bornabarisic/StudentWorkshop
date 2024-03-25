@@ -20,6 +20,7 @@
 // Function prototypes
 void ADC1_Init(void);
 void LED_control_with_ADC(void);
+void LCD_control_with_ADC(void);
 
 #ifdef __cplusplus
 }

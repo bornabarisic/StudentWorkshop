@@ -6,9 +6,11 @@
 */
 
 // Includes
-#include "adc_if.h"
+#include "stdio.h"
 #include "math.h"
+#include "adc_if.h"
 #include "stm32f4xx_hal.h"
+#include "lcd_interface.h"
 
 // Private variables
 static uint16_t readVal;
@@ -26,7 +28,7 @@ void Error_Handler(void);
 * @param hadc: ADC handle pointer
 * @retval None
 */
-void ADC1_Init_Pins(ADC_HandleTypeDef* hadc)
+static void ADC1_Init_Pins(ADC_HandleTypeDef* hadc)
 {
   GPIO_InitTypeDef GPIO_InitStruct = {0};
   if(hadc->Instance==ADC1)
@@ -38,7 +40,7 @@ void ADC1_Init_Pins(ADC_HandleTypeDef* hadc)
     /**ADC1 GPIO Configuration
     PA1     ------> ADC1_IN1
     */
-    GPIO_InitStruct.Pin = GPIO_PIN_1;
+    GPIO_InitStruct.Pin = GPIO_PIN_0;
     GPIO_InitStruct.Mode = GPIO_MODE_ANALOG;
     GPIO_InitStruct.Pull = GPIO_NOPULL;
     HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
@@ -53,8 +55,6 @@ void ADC1_Init_Pins(ADC_HandleTypeDef* hadc)
 void ADC1_Init(void)
 {
   ADC_ChannelConfTypeDef sConfig = {0};
-
-  ADC1_Init_Pins(&hadc1);
 
   /** Configure the global features of the ADC (Clock, Resolution, Data Alignment and number of conversion)
   */
@@ -84,6 +84,8 @@ void ADC1_Init(void)
   {
     Error_Handler();
   }
+
+  ADC1_Init_Pins(&hadc1);
 }
 
 
@@ -109,4 +111,24 @@ void LED_control_with_ADC (void)
 	HAL_Delay(1000*delay_factor);
 
 	HAL_GPIO_TogglePin(LD2_GPIO_Port, LD2_Pin);
+}
+
+/**
+  * @brief  This function makes the LED blink with the frequency set by the potentiometer using ADC.
+  * @retval None
+  */
+void LCD_control_with_ADC (void)
+{
+	HAL_ADC_Start(&hadc1);
+
+	HAL_ADC_PollForConversion(&hadc1, 1000);
+	readVal = HAL_ADC_GetValue(&hadc1);
+
+	HAL_ADC_Stop(&hadc1);
+
+	char pdata[14];
+	sprintf(pdata, "%d", readVal);
+	LCDWriteData(0,0,&pdata[0]);
+
+	HAL_Delay(500);
 }
