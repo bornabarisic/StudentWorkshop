@@ -12,12 +12,12 @@
 /* Defines --------------------------------------------------------------------------- */
 /* ----------------------------------------------------------------------------------- */
 
-#define I2C_SLAVE_ADDRESS		( 0x7C )
+#define I2C_SLAVE_ADDRESS_LCD	( 0x7C )
 #define I2C_MSG__SIZE			( 2U )
 #define I2C_TRANSMIT_TIMEOUT	( 100U )
-#define I2C_PORT				( GPIOB )
-#define I2C_SCL_PIN				( GPIO_PIN_8 )
-#define I2C_SDA_PIN				( GPIO_PIN_9 )
+#define I2C_PORT_LCD			( GPIOB )
+#define I2C_SCL_PIN_LCD			( GPIO_PIN_8 )
+#define I2C_SDA_PIN_LCD			( GPIO_PIN_9 )
 
 /* ----------------------------------------------------------------------------------- */
 /* Static variables ------------------------------------------------------------------ */
@@ -29,19 +29,19 @@ static I2C_HandleTypeDef i2chandle;
 /* Static function definitions ------------------------------------------------------- */
 /* ----------------------------------------------------------------------------------- */
 
-static void InitializeI2CGPIOPins(void)
+static void InitializeLCDI2CGPIOPins(void)
 {
 	__HAL_RCC_GPIOB_CLK_ENABLE();
 
 	GPIO_InitTypeDef gpio;
 
-	gpio.Pin 		= I2C_SCL_PIN | I2C_SDA_PIN;
+	gpio.Pin 		= I2C_SCL_PIN_LCD | I2C_SDA_PIN_LCD;
 	gpio.Pull 		= GPIO_PULLUP;
 	gpio.Speed 		= GPIO_SPEED_FREQ_VERY_HIGH;
 	gpio.Mode 		= GPIO_MODE_AF_PP;
 	gpio.Alternate 	= GPIO_AF4_I2C1;
 
-	HAL_GPIO_Init(I2C_PORT, &gpio);
+	HAL_GPIO_Init(I2C_PORT_LCD, &gpio);
 
 	__HAL_RCC_I2C1_CLK_ENABLE();
 }
@@ -52,7 +52,7 @@ static void InitializeI2CGPIOPins(void)
 
 int InitializeLCDI2C(void)
 {
-	InitializeI2CGPIOPins();
+	InitializeLCDI2CGPIOPins();
 
 	__I2C1_CLK_ENABLE();
 
@@ -78,7 +78,7 @@ int InitializeLCDI2C(void)
 int TransmitI2CDataToLCD(char *pdata)
 {
 	if (HAL_I2C_Master_Transmit(&i2chandle,
-								I2C_SLAVE_ADDRESS,
+								I2C_SLAVE_ADDRESS_LCD,
 								(uint8_t *)pdata,
 								I2C_MSG__SIZE,
 								I2C_TRANSMIT_TIMEOUT) != HAL_OK)

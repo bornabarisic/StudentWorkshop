@@ -1,3 +1,6 @@
+"./Core/Src/AHT20/aht20_driver.o"
+"./Core/Src/AHT20/aht20_i2c.o"
+"./Core/Src/AHT20/aht20_interface.o"
 "./Core/Src/LCD/lcd_driver.o"
 "./Core/Src/LCD/lcd_i2c.o"
 "./Core/Src/LCD/lcd_interface.o"

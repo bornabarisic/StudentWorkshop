@@ -1,0 +1,7 @@
+../Core/Src/AHT20/aht20_driver.c:48:13:InitializeAHT20	16	static
+../Core/Src/AHT20/aht20_driver.c:69:12:AHT20_sensorInit	16	static
+../Core/Src/AHT20/aht20_driver.c:81:13:AHT20_checkCalibration	16	static
+../Core/Src/AHT20/aht20_driver.c:92:6:AHT20_triggerMeasurement	32	static
+../Core/Src/AHT20/aht20_driver.c:136:12:GetTemperatureValue	8	static
+../Core/Src/AHT20/aht20_driver.c:143:12:GetHumidityValue	8	static
+../Core/Src/AHT20/aht20_driver.c:154:10:GetAHT20Interface	4	static
