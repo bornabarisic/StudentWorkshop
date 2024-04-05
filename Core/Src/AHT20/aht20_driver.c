@@ -63,6 +63,7 @@ static void InitializeAHT20(void)
 	}
 
 	//	ASSERT(aht20_state != AHT20_OK);
+	(void)aht20_state; // Adding this to avoid warnings until assert is implemented
 
 }
 
@@ -85,8 +86,7 @@ static bool AHT20_checkCalibration(void)
     TransmitI2CDataToAHT20(&statusReg, 1);
     ReceiveI2CDataFromAHT20(&cal, 1);
 
-//  return ((cal >> 3) & 1) == 1; // Check 4th bit is equal to 1 - Ovo ima smisla al nije tako u primjeru
-    return ((cal >> 4) & 1) == 1; // Check 4th bit is equal to 1
+    return ((cal >> 3) & 1) == 1; // Check 4th bit is equal to 1
 }
 
 void AHT20_triggerMeasurement(void)
@@ -107,8 +107,7 @@ void AHT20_triggerMeasurement(void)
     ReceiveI2CDataFromAHT20(&status, 1); // Read status byte
 
     // Wait for status to be ready before continuing
-//  while (((status >> 7) & 1) != 0) {		Ovo ima smisla al nije tako u primjeru
-    while (((status >> 8) & 1) != 0) {
+    while (((status >> 7) & 1) != 0) {
         //printf("Waiting for read to complete\n");
         ReceiveI2CDataFromAHT20(&status, 1);
     }
@@ -131,6 +130,8 @@ void AHT20_triggerMeasurement(void)
     temp <<= 8;
     temp |= data[5];
     AHT20_interface.temp_val = ((float)temp * 200 / 1048576) - 50;
+
+    (void)aht20_state; // Adding this to avoid warnings until assert is implemented
 }
 
 static int GetTemperatureValue(void)

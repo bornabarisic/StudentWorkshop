@@ -90,7 +90,7 @@ int InitializeAHT20I2C(void)
 int TransmitI2CDataToAHT20(uint8_t *pdata, uint8_t length)
 {
 	if (HAL_I2C_Master_Transmit(&i2chandle2,
-								I2C_SLAVE_ADDRESS_AHT20,
+								(I2C_SLAVE_ADDRESS_AHT20 << 1),
 								pdata,
 								length,
 								I2C_TRANSMIT_TIMEOUT) != HAL_OK)
@@ -104,7 +104,7 @@ int TransmitI2CDataToAHT20(uint8_t *pdata, uint8_t length)
 int ReceiveI2CDataFromAHT20(uint8_t *pdata, uint8_t length)
 {
 	if (HAL_I2C_Master_Receive(&i2chandle2,
-								(I2C_SLAVE_ADDRESS_AHT20 | 0x01),
+								((I2C_SLAVE_ADDRESS_AHT20 << 1) | 0x01),
 								pdata,
 								length,
 								I2C_TRANSMIT_TIMEOUT) != HAL_OK)

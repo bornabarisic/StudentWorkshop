@@ -96,7 +96,7 @@ int main(void)
   MX_GPIO_Init();
   MX_USART2_UART_Init();
   /* USER CODE BEGIN 2 */
-  ADC1_Init();
+//  ADC1_Init();
   LCDInit();
   AHT20Init();
   /* USER CODE END 2 */
@@ -110,6 +110,11 @@ int main(void)
 
 	char pdata[14];
 	sprintf(pdata, "%d", temperature);
+	LCDWriteData(0,0,&pdata[0]);
+
+	HAL_Delay(1000);
+
+	sprintf(pdata, "%s", "Iznos temp:");
 	LCDWriteData(0,0,&pdata[0]);
 
 	HAL_Delay(1000);
