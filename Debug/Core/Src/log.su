@@ -1,0 +1,2 @@
+../Core/Src/log.c:11:6:log_uart_init	16	static
+../Core/Src/log.c:40:5:_write	32	static

@@ -8,6 +8,7 @@
 
 #include "lcd_interface.h"
 #include "lcd_driver.h"
+#include "log.h"
 
 
 /* ----------------------------------------------------------------------------------- */
@@ -38,7 +39,7 @@ void LCDWriteData(int row, int col, char *pdata)
 		LOG_ERR("Krivo postavljeni red ili stupac"
 				"\n\tRedak: %d"
 				"\n\rStupac: %d",
-				row);
+				row, col);
 		return;
 	}
 

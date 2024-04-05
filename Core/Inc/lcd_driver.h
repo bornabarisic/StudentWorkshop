@@ -40,16 +40,6 @@ enum lcd_retval
 /* ----------------------------------------------------------------------------------- */
 /* Public function declarations ------------------------------------------------------ */
 /* ----------------------------------------------------------------------------------- */
-#define ASSERT(condition) 				\
-	do									\
-	{									\
-								\
-	}while(0)
-#define LOG_ERR(condition1, condition2) 				\
-	do									\
-	{									\
-								\
-	}while(0)
 
 lcd_t *GetLCDInterface(void);
 

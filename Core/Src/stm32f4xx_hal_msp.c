@@ -214,50 +214,50 @@ void HAL_I2C_MspInit(I2C_HandleTypeDef* hi2c)
 * @param hi2c: I2C handle pointer
 * @retval None
 */
-void HAL_I2C_MspDeInit(I2C_HandleTypeDef* hi2c)
-{
-  if(hi2c->Instance==I2C1)
-  {
-  /* USER CODE BEGIN I2C1_MspDeInit 0 */
-
-  /* USER CODE END I2C1_MspDeInit 0 */
-    /* Peripheral clock disable */
-    __HAL_RCC_I2C1_CLK_DISABLE();
-
-    /**I2C1 GPIO Configuration
-    PB8     ------> I2C1_SCL
-    PB9     ------> I2C1_SDA
-    */
-    HAL_GPIO_DeInit(GPIOB, GPIO_PIN_8);
-
-    HAL_GPIO_DeInit(GPIOB, GPIO_PIN_9);
-
-  /* USER CODE BEGIN I2C1_MspDeInit 1 */
-
-  /* USER CODE END I2C1_MspDeInit 1 */
-  }
-  else if(hi2c->Instance==I2C3)
-  {
-  /* USER CODE BEGIN I2C3_MspDeInit 0 */
-
-  /* USER CODE END I2C3_MspDeInit 0 */
-    /* Peripheral clock disable */
-    __HAL_RCC_I2C3_CLK_DISABLE();
-
-    /**I2C3 GPIO Configuration
-    PC9     ------> I2C3_SDA
-    PA8     ------> I2C3_SCL
-    */
-    HAL_GPIO_DeInit(GPIOC, GPIO_PIN_9);
-
-    HAL_GPIO_DeInit(GPIOA, GPIO_PIN_8);
-
-  /* USER CODE BEGIN I2C3_MspDeInit 1 */
-
-  /* USER CODE END I2C3_MspDeInit 1 */
-  }
-
-}
+//void HAL_I2C_MspDeInit(I2C_HandleTypeDef* hi2c)
+//{
+//  if(hi2c->Instance==I2C1)
+//  {
+//  /* USER CODE BEGIN I2C1_MspDeInit 0 */
+//
+//  /* USER CODE END I2C1_MspDeInit 0 */
+//    /* Peripheral clock disable */
+//    __HAL_RCC_I2C1_CLK_DISABLE();
+//
+//    /**I2C1 GPIO Configuration
+//    PB8     ------> I2C1_SCL
+//    PB9     ------> I2C1_SDA
+//    */
+//    HAL_GPIO_DeInit(GPIOB, GPIO_PIN_8);
+//
+//    HAL_GPIO_DeInit(GPIOB, GPIO_PIN_9);
+//
+//  /* USER CODE BEGIN I2C1_MspDeInit 1 */
+//
+//  /* USER CODE END I2C1_MspDeInit 1 */
+//  }
+//  else if(hi2c->Instance==I2C3)
+//  {
+//  /* USER CODE BEGIN I2C3_MspDeInit 0 */
+//
+//  /* USER CODE END I2C3_MspDeInit 0 */
+//    /* Peripheral clock disable */
+//    __HAL_RCC_I2C3_CLK_DISABLE();
+//
+//    /**I2C3 GPIO Configuration
+//    PC9     ------> I2C3_SDA
+//    PA8     ------> I2C3_SCL
+//    */
+//    HAL_GPIO_DeInit(GPIOC, GPIO_PIN_9);
+//
+//    HAL_GPIO_DeInit(GPIOA, GPIO_PIN_8);
+//
+//  /* USER CODE BEGIN I2C3_MspDeInit 1 */
+//
+//  /* USER CODE END I2C3_MspDeInit 1 */
+//  }
+//
+//}
 
 /**
 * @brief UART MSP Initialization
@@ -301,28 +301,28 @@ void HAL_UART_MspInit(UART_HandleTypeDef* huart)
 * @param huart: UART handle pointer
 * @retval None
 */
-void HAL_UART_MspDeInit(UART_HandleTypeDef* huart)
-{
-  if(huart->Instance==USART2)
-  {
-  /* USER CODE BEGIN USART2_MspDeInit 0 */
-
-  /* USER CODE END USART2_MspDeInit 0 */
-    /* Peripheral clock disable */
-    __HAL_RCC_USART2_CLK_DISABLE();
-
-    /**USART2 GPIO Configuration
-    PA2     ------> USART2_TX
-    PA3     ------> USART2_RX
-    */
-    HAL_GPIO_DeInit(GPIOA, USART_TX_Pin|USART_RX_Pin);
-
-  /* USER CODE BEGIN USART2_MspDeInit 1 */
-
-  /* USER CODE END USART2_MspDeInit 1 */
-  }
-
-}
+//void HAL_UART_MspDeInit(UART_HandleTypeDef* huart)
+//{
+//  if(huart->Instance==USART2)
+//  {
+//  /* USER CODE BEGIN USART2_MspDeInit 0 */
+//
+//  /* USER CODE END USART2_MspDeInit 0 */
+//    /* Peripheral clock disable */
+//    __HAL_RCC_USART2_CLK_DISABLE();
+//
+//    /**USART2 GPIO Configuration
+//    PA2     ------> USART2_TX
+//    PA3     ------> USART2_RX
+//    */
+//    HAL_GPIO_DeInit(GPIOA, USART_TX_Pin|USART_RX_Pin);
+//
+//  /* USER CODE BEGIN USART2_MspDeInit 1 */
+//
+//  /* USER CODE END USART2_MspDeInit 1 */
+//  }
+//
+//}
 
 /* USER CODE BEGIN 1 */
 

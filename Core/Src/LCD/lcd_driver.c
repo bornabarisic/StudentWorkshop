@@ -114,6 +114,7 @@ static void InitializeLCD(void)
 	lcd_state = ClearLCD();
 
 //	ASSERT(lcd_state != LCD_OK);
+	(void)lcd_state;
 }
 
 static int SendDataToLCD(void)
