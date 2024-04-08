@@ -73,7 +73,7 @@ static int AHT20_sensorInit(void)
 	int aht20_state = AHT20_OK;
 
 	uint8_t reg[3] = {0xBE, 0x08, 0x00};
-	aht20_state = TransmitI2CDataToAHT20(&reg, 3);
+	aht20_state = TransmitI2CDataToAHT20(reg, 3);
 	HAL_Delay(10); // Wait 10ms for initialization
 
 	return aht20_state;
@@ -101,7 +101,7 @@ void AHT20_triggerMeasurement(void)
     uint8_t status; // result status
     uint8_t data[6]; // data array
 
-    TransmitI2CDataToAHT20(&measureCommand, 3);
+    TransmitI2CDataToAHT20(measureCommand, 3);
     HAL_Delay(80); // Wait for measurement
 
     ReceiveI2CDataFromAHT20(&status, 1); // Read status byte
@@ -112,7 +112,7 @@ void AHT20_triggerMeasurement(void)
         ReceiveI2CDataFromAHT20(&status, 1);
     }
 
-    aht20_state = ReceiveI2CDataFromAHT20(&data, 6); // Read all data
+    aht20_state = ReceiveI2CDataFromAHT20(data, 6); // Read all data
     //	ASSERT(aht20_state != AHT20_OK);
 
     // Convert data for reading and store in variable

@@ -486,7 +486,7 @@ static int AHT20_sensorInit(void)
  8000600:	3302      	adds	r3, #2
  8000602:	0c12      	lsrs	r2, r2, #16
  8000604:	701a      	strb	r2, [r3, #0]
-	aht20_state = TransmitI2CDataToAHT20(&reg, 3);
+	aht20_state = TransmitI2CDataToAHT20(reg, 3);
  8000606:	463b      	mov	r3, r7
  8000608:	2103      	movs	r1, #3
  800060a:	4618      	mov	r0, r3
@@ -582,7 +582,7 @@ void AHT20_triggerMeasurement(void)
     uint8_t status; // result status
     uint8_t data[6]; // data array
 
-    TransmitI2CDataToAHT20(&measureCommand, 3);
+    TransmitI2CDataToAHT20(measureCommand, 3);
  8000698:	f107 0308 	add.w	r3, r7, #8
  800069c:	2103      	movs	r1, #3
  800069e:	4618      	mov	r0, r3
@@ -615,7 +615,7 @@ void AHT20_triggerMeasurement(void)
  80006cc:	d1f3      	bne.n	80006b6 <AHT20_triggerMeasurement+0x52>
     }
 
-    aht20_state = ReceiveI2CDataFromAHT20(&data, 6); // Read all data
+    aht20_state = ReceiveI2CDataFromAHT20(data, 6); // Read all data
  80006ce:	463b      	mov	r3, r7
  80006d0:	2106      	movs	r1, #6
  80006d2:	4618      	mov	r0, r3
