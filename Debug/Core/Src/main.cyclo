@@ -1,4 +1,6 @@
-../Core/Src/main.c:70:5:main	1
-../Core/Src/main.c:131:6:SystemClock_Config	3
-../Core/Src/main.c:179:13:MX_GPIO_Init	1
-../Core/Src/main.c:219:6:Error_Handler	1
+../Core/Src/main.c:72:5:main	1
+../Core/Src/main.c:120:6:WaitForButton	3
+../Core/Src/main.c:142:6:TemperatureToLCD	1
+../Core/Src/main.c:164:6:SystemClock_Config	3
+../Core/Src/main.c:212:13:MX_GPIO_Init	1
+../Core/Src/main.c:253:6:Error_Handler	1

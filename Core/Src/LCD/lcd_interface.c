@@ -45,7 +45,7 @@ void LCDWriteData(int row, int col, char *pdata)
 
 	sprintf(plcd->buffer, pdata);
 
-	lcd_state = plcd->clear_data();
+	//lcd_state = plcd->clear_data();
 	lcd_state = plcd->move_cursor(row, col);
 	lcd_state = plcd->send_data();
 

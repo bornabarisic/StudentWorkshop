@@ -54,6 +54,8 @@
 /* Private function prototypes -----------------------------------------------*/
 void SystemClock_Config(void);
 static void MX_GPIO_Init(void);
+static void TemperatureToLCD(void);
+void WaitForButton(void);
 /* USER CODE BEGIN PFP */
 
 /* USER CODE END PFP */
@@ -97,31 +99,62 @@ int main(void)
   AHT20Init();
   log_uart_init();
   /* USER CODE END 2 */
-  int temperature;
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   while (1)
   {
     /* USER CODE END WHILE */
-	temperature =  AHT20_GetTemp();
 
-	char pdata[14];
-	sprintf(pdata, "%d", temperature);
-	LCDWriteData(0,0,&pdata[0]);
-
-	HAL_Delay(1000);
-
-	sprintf(pdata, "%s", "Iznos temp:");
-	LCDWriteData(0,0,&pdata[0]);
-
-	HAL_Delay(1000);
-
-	LOG_ERR("Iznos temperature: %d\n", temperature);
+	WaitForButton();
 
     /* USER CODE BEGIN 3 */
 
   }
   /* USER CODE END 3 */
+}
+
+/**
+  * @brief Waits for a button press
+  * @retval None
+  */
+void WaitForButton(void)
+{
+	// If button pin value = 0, someone pressed the button
+	if (HAL_GPIO_ReadPin(B1_GPIO_Port,B1_Pin) == 0)
+	{
+
+	HAL_Delay(1);
+
+	while (HAL_GPIO_ReadPin(B1_GPIO_Port,B1_Pin) != 1)
+		{
+			// Wait for the user to release the button
+		}
+	// A rising edge happened, now the temperature value can be read
+
+	TemperatureToLCD();
+	}
+}
+
+/**
+  * @brief Reads temperature value and prints it to LCD
+  * @retval None
+  */
+void TemperatureToLCD(void)
+{
+	int temperature =  AHT20_GetTemp();
+
+	LCDClearScreen();
+
+	char pdata[14];
+	sprintf(pdata, "%s", "Iznos temp:");
+	LCDWriteData(0,0,&pdata[0]);
+
+	sprintf(pdata, "%d", temperature);
+	LCDWriteData(1,0,&pdata[0]);
+
+	HAL_Delay(1000);
+
+	LOG_ERR("Iznos temperature: %d\n", temperature);
 }
 
 /**
@@ -193,8 +226,9 @@ static void MX_GPIO_Init(void)
 
   /*Configure GPIO pin : B1_Pin */
   GPIO_InitStruct.Pin = B1_Pin;
-  GPIO_InitStruct.Mode = GPIO_MODE_IT_FALLING;
+  GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
+  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
   HAL_GPIO_Init(B1_GPIO_Port, &GPIO_InitStruct);
 
   /*Configure GPIO pin : LD2_Pin */
