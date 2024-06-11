@@ -1,0 +1,7 @@
+../Core/Src/Measurement/AHT20/aht20_driver.c:49:13:InitializeAHT20	4
+../Core/Src/Measurement/AHT20/aht20_driver.c:71:12:AHT20_sensorInit	1
+../Core/Src/Measurement/AHT20/aht20_driver.c:83:13:AHT20_checkCalibration	1
+../Core/Src/Measurement/AHT20/aht20_driver.c:93:6:AHT20_triggerMeasurement	4
+../Core/Src/Measurement/AHT20/aht20_driver.c:145:12:GetTemperatureValue	1
+../Core/Src/Measurement/AHT20/aht20_driver.c:152:12:GetHumidityValue	1
+../Core/Src/Measurement/AHT20/aht20_driver.c:163:10:GetAHT20Interface	1

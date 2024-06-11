@@ -1,0 +1,3 @@
+../Core/Src/Display/lcd_interface.c:18:6:LCDInit	1
+../Core/Src/Display/lcd_interface.c:29:6:LCDWriteData	4
+../Core/Src/Display/lcd_interface.c:60:6:LCDClearScreen	2

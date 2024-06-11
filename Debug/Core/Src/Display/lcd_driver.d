@@ -1,4 +1,6 @@
-Core/Src/main.o: ../Core/Src/main.c ../Core/Inc/main.h \
+Core/Src/Display/lcd_driver.o: ../Core/Src/Display/lcd_driver.c \
+ ../Core/Inc/Display/lcd_driver.h ../Core/Inc/Display/lcd_i2c.h \
+ ../Core/Inc/Logger/log.h \
  ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h \
  ../Core/Inc/stm32f4xx_hal_conf.h \
  ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_rcc.h \
@@ -29,12 +31,10 @@ Core/Src/main.o: ../Core/Src/main.c ../Core/Inc/main.h \
  ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_i2c_ex.h \
  ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_pwr.h \
  ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_pwr_ex.h \
- ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_uart.h \
- ../Core/Inc/Measurement/Potentiometer/adc_if.h \
- ../Core/Inc/Display/lcd_interface.h \
- ../Core/Inc/Measurement/AHT20/aht20_interface.h ../Core/Inc/Logger/log.h \
- ../Core/Inc/Flash/flash.h
-../Core/Inc/main.h:
+ ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_uart.h
+../Core/Inc/Display/lcd_driver.h:
+../Core/Inc/Display/lcd_i2c.h:
+../Core/Inc/Logger/log.h:
 ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h:
 ../Core/Inc/stm32f4xx_hal_conf.h:
 ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_rcc.h:
@@ -66,8 +66,3 @@ Core/Src/main.o: ../Core/Src/main.c ../Core/Inc/main.h \
 ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_pwr.h:
 ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_pwr_ex.h:
 ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_uart.h:
-../Core/Inc/Measurement/Potentiometer/adc_if.h:
-../Core/Inc/Display/lcd_interface.h:
-../Core/Inc/Measurement/AHT20/aht20_interface.h:
-../Core/Inc/Logger/log.h:
-../Core/Inc/Flash/flash.h:

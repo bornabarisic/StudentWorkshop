@@ -1,4 +1,0 @@
-../Core/Src/AHT20/aht20_i2c.c:32:13:InitializeAHT20I2CGPIOPins	40	static
-../Core/Src/AHT20/aht20_i2c.c:65:5:InitializeAHT20I2C	16	static
-../Core/Src/AHT20/aht20_i2c.c:90:5:TransmitI2CDataToAHT20	24	static
-../Core/Src/AHT20/aht20_i2c.c:104:5:ReceiveI2CDataFromAHT20	24	static

@@ -11,8 +11,11 @@ RM := rm -rf
 -include sources.mk
 -include Drivers/STM32F4xx_HAL_Driver/Src/subdir.mk
 -include Core/Startup/subdir.mk
--include Core/Src/LCD/subdir.mk
--include Core/Src/AHT20/subdir.mk
+-include Core/Src/Measurement/Potentiometer/subdir.mk
+-include Core/Src/Measurement/AHT20/subdir.mk
+-include Core/Src/Logger/subdir.mk
+-include Core/Src/Flash/subdir.mk
+-include Core/Src/Display/subdir.mk
 -include Core/Src/subdir.mk
 -include objects.mk
 

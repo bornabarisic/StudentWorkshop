@@ -1,2 +1,0 @@
-../Core/Src/log.c:11:6:log_uart_init	2
-../Core/Src/log.c:40:5:_write	3
