@@ -124,8 +124,7 @@ int FlashWrite(float input_val)
     }
    else
     {
-      /* Error occurred while writing data in Flash memory.
-         User can add here some code to deal with this error */
+      /* Error occurred while writing data in Flash memory */
 	  LOG_ERR("Upisivanje u flash nije bilo uspjesno\n");
       while (1)
       {

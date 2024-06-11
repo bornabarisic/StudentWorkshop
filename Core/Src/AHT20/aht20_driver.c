@@ -81,12 +81,12 @@ static int AHT20_sensorInit(void)
 
 static bool AHT20_checkCalibration(void)
 {
-    uint8_t statusReg = 0x71;
+    uint8_t statusReg = 0x71; // Command for checking calibration
     uint8_t cal; // Result byte
     TransmitI2CDataToAHT20(&statusReg, 1);
     ReceiveI2CDataFromAHT20(&cal, 1);
 
-    return ((cal >> 3) & 1) == 1; // Check 4th bit is equal to 1
+    return ((cal >> 3) & 1) == 1; // Check if 4th bit is equal to 1 (calibration successful)
 }
 
 void AHT20_triggerMeasurement(void)
@@ -97,6 +97,7 @@ void AHT20_triggerMeasurement(void)
     	aht20_state = AHT20_sensorInit();
     }
 
+    // Commands for triggering the measurement
     uint8_t measureCommand[3] = {0xAC, 0x33, 0x00};
     uint8_t status; // result status
     uint8_t data[6]; // data array
@@ -116,6 +117,10 @@ void AHT20_triggerMeasurement(void)
     //	ASSERT(aht20_state != AHT20_OK);
 
     // Convert data for reading and store in variable
+
+    // Check the AHT20 datasheet for a clearer understanding, bytes data[1],[2], and half of
+    // data[3] represent humidity, the other half of data[3] and data[4] and [5] represent temperature
+    // The formulas for conversion to units of Celsius and Relative Humidity can be found there as well
 
     uint32_t humidity = data[1];
     humidity <<= 8;
