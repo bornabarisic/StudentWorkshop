@@ -5,6 +5,7 @@
 
 #include "aht20_driver.h"
 #include "aht20_i2c.h"
+#include "log.h"
 
 #include "stm32f4xx_hal.h"
 #include <stdbool.h>
@@ -52,7 +53,8 @@ static void InitializeAHT20(void)
 	HAL_Delay(20);
 
 	aht20_state = InitializeAHT20I2C();
-	//	ASSERT(ahr20_state != AHT20_OK);
+
+	ASSERT(aht20_state != AHT20_OK);
 
 	HAL_Delay(40);
 
@@ -62,8 +64,7 @@ static void InitializeAHT20(void)
 		aht20_state = AHT20_sensorInit();
 	}
 
-	//	ASSERT(aht20_state != AHT20_OK);
-	(void)aht20_state; // Adding this to avoid warnings until assert is implemented
+	ASSERT(aht20_state != AHT20_OK);
 
 }
 
@@ -93,7 +94,8 @@ void AHT20_triggerMeasurement(void)
 {
 	int aht20_state = AHT20_OK;
 
-    while(AHT20_checkCalibration() == false) {
+    while(AHT20_checkCalibration() == false)
+    {
     	aht20_state = AHT20_sensorInit();
     }
 
@@ -108,13 +110,14 @@ void AHT20_triggerMeasurement(void)
     ReceiveI2CDataFromAHT20(&status, 1); // Read status byte
 
     // Wait for status to be ready before continuing
-    while (((status >> 7) & 1) != 0) {
-        //printf("Waiting for read to complete\n");
+    while (((status >> 7) & 1) != 0)
+    {
         ReceiveI2CDataFromAHT20(&status, 1);
     }
 
     aht20_state = ReceiveI2CDataFromAHT20(data, 6); // Read all data
-    //	ASSERT(aht20_state != AHT20_OK);
+
+    ASSERT(aht20_state != AHT20_OK);
 
     // Convert data for reading and store in variable
 
@@ -127,6 +130,7 @@ void AHT20_triggerMeasurement(void)
     humidity |= data[2];
     humidity <<= 4;
     humidity |= data[3] >> 4;
+
     AHT20_interface.hum_val = ((float)humidity * 100) / 1048576;
 
     uint32_t temp = data[3] & 0x0F;
@@ -134,9 +138,8 @@ void AHT20_triggerMeasurement(void)
     temp |= data[4];
     temp <<= 8;
     temp |= data[5];
-    AHT20_interface.temp_val = ((float)temp * 200 / 1048576) - 50;
 
-    (void)aht20_state; // Adding this to avoid warnings until assert is implemented
+    AHT20_interface.temp_val = ((float)temp * 200 / 1048576) - 50;
 }
 
 static int GetTemperatureValue(void)

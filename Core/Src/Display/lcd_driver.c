@@ -5,6 +5,7 @@
 
 #include "lcd_driver.h"
 #include "lcd_i2c.h"
+#include "log.h"
 
 #include "stm32f4xx_hal.h"
 
@@ -107,13 +108,13 @@ static void InitializeLCD(void)
 	lcd_state = SendToLCD(LCD_MSG_TYPE_COMMAND, 0x06); /* Entry mode :  increment by 1, no display shift*/
 	HAL_Delay(50);
 
-//	ASSERT(lcd_state != LCD_OK);
+	ASSERT(lcd_state != LCD_OK);
 
 	HAL_Delay(1000);
 
 	lcd_state = ClearLCD();
 
-//	ASSERT(lcd_state != LCD_OK);
+	ASSERT(lcd_state != LCD_OK);
 	(void)lcd_state;
 }
 
