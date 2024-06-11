@@ -1,0 +1,4 @@
+../Core/Src/flash.c:28:5:FlashWrite	12
+../Core/Src/flash.c:180:6:FlashReadLogs	3
+../Core/Src/flash.c:211:17:GetSector	15
+../Core/Src/flash.c:255:17:GetSectorSize	6

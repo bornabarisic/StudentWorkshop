@@ -22,6 +22,7 @@
 #include "lcd_interface.h"
 #include "aht20_interface.h"
 #include "log.h"
+#include "flash.h"
 
 #include <stdio.h>
 
@@ -98,6 +99,8 @@ int main(void)
   LCDInit();
   AHT20Init();
   log_uart_init();
+
+  FlashReadLogs();
   /* USER CODE END 2 */
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
@@ -141,7 +144,7 @@ void WaitForButton(void)
   */
 void TemperatureToLCD(void)
 {
-	int temperature =  AHT20_GetTemp();
+	float temperature =  AHT20_GetTemp();
 
 	LCDClearScreen();
 
@@ -149,12 +152,14 @@ void TemperatureToLCD(void)
 	sprintf(pdata, "%s", "Iznos temp:");
 	LCDWriteData(0,0,&pdata[0]);
 
-	sprintf(pdata, "%d", temperature);
+	sprintf(pdata, "%f", temperature);
 	LCDWriteData(1,0,&pdata[0]);
+
+	FlashWrite(temperature);
 
 	HAL_Delay(1000);
 
-	LOG_ERR("Iznos temperature: %d\n", temperature);
+	LOG_ERR("Iznos temperature: %f\n", temperature);
 }
 
 /**
