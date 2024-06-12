@@ -32,11 +32,11 @@ int FlashWriteLog(float input_val)
 	int retval = 0;
 	uint32_t SECTORError = 0, MemoryProgramStatus = 0;
 	float data32 = 0;
+	int index = 0;
 
     /* Check how many values are already written and fill the array with them */
 
 	uint32_t Address = FLASH_USER_START_ADDR;
-	float* values_ptr = &values[0];
 
 	while (Address < FLASH_VALUES_END_ADDR)
 	  {
@@ -44,36 +44,43 @@ int FlashWriteLog(float input_val)
 
 	    if (data32 != 0xFFFFFFFF)
 	    {
-	      *values_ptr = data32;
-	      values_ptr++;
+	      values[index] = data32;
+	      index++;
 	      Address = Address + 4;
 	    }
 
 	    else break;
 	  }
 
+
+
+
+
 	/* Add the new value to the array so we can write them to flash */
 
-	if (values_ptr <= &values[9])
+	if (index <= 9)
 	{
 		/* The array is not full yet, we can just append the value */
-		*values_ptr = input_val;
+		values[index] = input_val;
 	}
 	else
 	{
 		/* The array is full, we must shift all values to save the latest 10 logs */
-		values_ptr = &values[0];
+		index = 0;
 
-		while (values_ptr < &values[9])
+		while (index < 9)
 		{
-			*values_ptr = *(values_ptr+1);
-			values_ptr++;
+			values[index] = values[index+1];
+			index++;
 		}
 
 		/* Finally, write the new value at the 10th place in the array */
-		*values_ptr = input_val;
+		values[index] = input_val;
 
 	}
+
+
+
 
 
   /* Unlock the Flash to enable the flash control register access */
@@ -108,17 +115,20 @@ int FlashWriteLog(float input_val)
     }
   }
 
+
+
+
   /* Program the user Flash area word by word */
 
   Address = FLASH_USER_START_ADDR;
-  values_ptr = &values[0];
+  index = 0;;
 
-  while ((Address < FLASH_VALUES_END_ADDR) && (*values_ptr != 0xFFFFFFFF))
+  while ((Address < FLASH_VALUES_END_ADDR) && (values[index] != 0))
   {
-    if (HAL_FLASH_Program(FLASH_TYPEPROGRAM_WORD, Address, *values_ptr) == HAL_OK)
+    if (HAL_FLASH_Program(FLASH_TYPEPROGRAM_WORD, Address, values[index]) == HAL_OK)
     {
       Address = Address + 4;
-      values_ptr++;
+      index++;
     }
    else
     {
@@ -135,23 +145,27 @@ int FlashWriteLog(float input_val)
      to protect the FLASH memory against possible unwanted operation) */
   HAL_FLASH_Lock();
 
+
+
+
+
   /* Check if the programmed data is OK
       MemoryProgramStatus = 0: data programmed correctly
       MemoryProgramStatus != 0: number of words not programmed correctly */
   Address = FLASH_USER_START_ADDR;
-  values_ptr = &values[0];
+  index = 0;
   MemoryProgramStatus = 0x0;
 
   while (Address < FLASH_VALUES_END_ADDR)
   {
     data32 = *(__IO float *)Address;
 
-    if (data32 != *values_ptr)
+    if ((data32 != values[index]) && (data32 != 0xFFFFFFFF))
     {
       MemoryProgramStatus++;
     }
     Address = Address + 4;
-    values_ptr++;
+    index++;
   }
 
   /*Check if there is an issue to program data*/
@@ -177,8 +191,7 @@ int FlashWriteLog(float input_val)
 void FlashReadLogs(void)
 {
 	uint32_t Address = FLASH_USER_START_ADDR;
-	float* values_ptr = &values[0];
-	__IO float data32 = 0;
+	float data32 = 0;
 
 	LOG_INFO("Prethodna mjerenje iznose:\n");
 
@@ -186,12 +199,10 @@ void FlashReadLogs(void)
 	{
 		data32 = *(__IO float *)Address;
 
-		if (data32 != 0)
+		if ((data32 != 0) && (data32 != 0xFFFFFFFF))
 		{
-			*values_ptr = data32;
-		    values_ptr++;
 		    Address = Address + 4;
-		    LOG_INFO("%f\n", *values_ptr);
+		    LOG_INFO("%f\n", data32);
 		}
 
 		else break;

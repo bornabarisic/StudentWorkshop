@@ -1,2 +1,2 @@
-../Core/Src/Flash/flash.c:30:5:FlashWriteLog	12
-../Core/Src/Flash/flash.c:177:6:FlashReadLogs	3
+../Core/Src/Flash/flash.c:30:5:FlashWriteLog	13
+../Core/Src/Flash/flash.c:191:6:FlashReadLogs	4

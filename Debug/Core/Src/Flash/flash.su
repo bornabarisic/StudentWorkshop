@@ -1,2 +1,2 @@
 ../Core/Src/Flash/flash.c:30:5:FlashWriteLog	40	static
-../Core/Src/Flash/flash.c:177:6:FlashReadLogs	40	static
+../Core/Src/Flash/flash.c:191:6:FlashReadLogs	32	static
