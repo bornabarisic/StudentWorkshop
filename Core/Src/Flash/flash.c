@@ -42,7 +42,7 @@ int FlashWriteLog(float input_val)
 
 	while (Address < FLASH_VALUES_END_ADDR)
 	  {
-	    data32 = *(__IO float *)Address;
+	    data32 = *(float *)Address;
 
 	    if (data32 != 0xFFFFFFFF)
 	    {
@@ -102,7 +102,7 @@ int FlashWriteLog(float input_val)
 
   while ((Address < FLASH_VALUES_END_ADDR) && (values[index] != 0))
   {
-    if (HAL_FLASH_Program(FLASH_TYPEPROGRAM_WORD, Address, values[index]) == HAL_OK)
+    if (HAL_FLASH_Program(FLASH_TYPEPROGRAM_WORD, Address, *(uint32_t *)&values[index]) == HAL_OK)
     {
       Address = Address + 4;
       index++;
@@ -135,7 +135,7 @@ int FlashWriteLog(float input_val)
 
   while (Address < FLASH_VALUES_END_ADDR)
   {
-    data32 = *(__IO float *)Address;
+    data32 = *(float *)Address;
 
     if ((data32 != values[index]) && (data32 != 0xFFFFFFFF))
     {
