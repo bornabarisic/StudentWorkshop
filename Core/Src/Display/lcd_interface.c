@@ -19,7 +19,7 @@ void LCDInit(void)
 {
 	lcd_t *plcd = GetLCDInterface();
 
-//	ASSERT(plcd == NULL);
+	ASSERT(plcd == NULL);
 
 	memset(plcd->buffer, 0x00, LCD_MAX_NUMBER_OF_COLUMNS);
 
@@ -31,7 +31,7 @@ void LCDWriteData(int row, int col, char *pdata)
 	int lcd_state = LCD_OK;
 	lcd_t *plcd = GetLCDInterface();
 
-//	ASSERT(plcd == NULL);
+	ASSERT(plcd == NULL);
 
 	if ( (row >= LCD_MAX_NUMBER_OF_ROWS) ||
 		 (col >= LCD_MAX_NUMBER_OF_COLUMNS) )
@@ -62,7 +62,7 @@ void LCDClearScreen(void)
 	int lcd_state = LCD_OK;
 	lcd_t *plcd = GetLCDInterface();
 
-//	ASSERT(plcd == NULL);
+	ASSERT(plcd == NULL);
 
 	lcd_state = plcd->clear_data();
 

@@ -28,8 +28,8 @@ static uint32_t GetSectorSize(uint32_t Sector);
 int FlashWrite(float input_val)
 {
 	int retval = 0;
-	uint32_t FirstSector = 0, NbOfSectors = 0, SECTORError = 0;
-	__IO float data32 = 0 , MemoryProgramStatus = 0;
+	uint32_t FirstSector = 0, NbOfSectors = 0, SECTORError = 0, MemoryProgramStatus = 0;
+	float data32 = 0;
 
     /* Check how many values are already written and fill the array with them */
 
@@ -40,7 +40,7 @@ int FlashWrite(float input_val)
 	  {
 	    data32 = *(__IO float *)Address;
 
-	    if (data32 != 0)
+	    if (data32 != 0xFFFFFFFF)
 	    {
 	      *values_ptr = data32;
 	      values_ptr++;
@@ -52,7 +52,7 @@ int FlashWrite(float input_val)
 
 	/* Add the new value to the array so we can write them to flash */
 
-	if (values_ptr <= &values[10])
+	if (values_ptr <= &values[9])
 	{
 		/* The array is not full yet, we can just append the value */
 		*values_ptr = input_val;
@@ -62,7 +62,7 @@ int FlashWrite(float input_val)
 		/* The array is full, we must shift all values to save the latest 10 logs */
 		values_ptr = &values[0];
 
-		while (values_ptr < &values[10])
+		while (values_ptr < &values[9])
 		{
 			*values_ptr = *(values_ptr+1);
 			values_ptr++;
@@ -115,7 +115,7 @@ int FlashWrite(float input_val)
   Address = FLASH_USER_START_ADDR;
   values_ptr = &values[0];
 
-  while ((Address < FLASH_VALUES_END_ADDR) && (*values_ptr != 0))
+  while ((Address < FLASH_VALUES_END_ADDR) && (*values_ptr != 0xFFFFFFFF))
   {
     if (HAL_FLASH_Program(FLASH_TYPEPROGRAM_WORD, Address, *values_ptr) == HAL_OK)
     {
