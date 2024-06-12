@@ -5,14 +5,14 @@
 /* Private define ------------------------------------------------------------*/
 #define FLASH_USER_START_ADDR   ADDR_FLASH_SECTOR_4   	   /* Start @ of user Flash area */
 #define FLASH_USER_END_ADDR     ADDR_FLASH_SECTOR_5 - 1    /* End @ of user Flash area */
-#define FLASH_VALUES_END_ADDR	ADDR_FLASH_SECTOR_4  +  10*sizeof(float)	/* End @ of Flash area used for temperature logs */
+#define FLASH_VALUES_END_ADDR	ADDR_FLASH_SECTOR_4  +  10*sizeof(uint32_t)	/* End @ of Flash area used for temperature logs */
 
 #define FIRST_SECTOR	FLASH_SECTOR_4
 #define NBOFSECTORS		1
 
 /* Private macro -------------------------------------------------------------*/
 /* Private variables ---------------------------------------------------------*/
-static float values[10] = {0};
+static uint32_t values[10] = {0};
 
 /*Variable used for Erase procedure*/
 static FLASH_EraseInitTypeDef EraseInitStruct;
@@ -22,6 +22,7 @@ static FLASH_EraseInitTypeDef EraseInitStruct;
 static int FlashErase(void);
 int FlashWrite(void);
 int FlashVerify(void);
+
 /* Public functions ---------------------------------------------------------*/
 
 /**
@@ -29,12 +30,13 @@ int FlashVerify(void);
   * @param  val - Value to be written in flash
   * @retval 0 if successful
   */
-int FlashWriteLog(float input_val)
+int FlashWriteLog(uint32_t input_val)
 {
 	int retval = 0;
 	uint32_t MemoryProgramStatus = 0;
-	float data32 = 0;
+	uint32_t data32 = 0;
 	int index = 0;
+
 
     /* Check how many values are already written and fill the array with them */
 
@@ -42,7 +44,7 @@ int FlashWriteLog(float input_val)
 
 	while (Address < FLASH_VALUES_END_ADDR)
 	  {
-	    data32 = *(float *)Address;
+	    data32 = *(uint32_t *)Address;
 
 	    if (data32 != 0xFFFFFFFF)
 	    {
@@ -135,7 +137,7 @@ int FlashWriteLog(float input_val)
 
   while (Address < FLASH_VALUES_END_ADDR)
   {
-    data32 = *(float *)Address;
+    data32 = *(uint32_t *)Address;
 
     if ((data32 != values[index]) && (data32 != 0xFFFFFFFF))
     {
@@ -168,18 +170,18 @@ int FlashWriteLog(float input_val)
 void FlashReadLogs(void)
 {
 	uint32_t Address = FLASH_USER_START_ADDR;
-	float data32 = 0;
+	uint32_t data32 = 0;
 
 	LOG_INFO("Prethodna mjerenje iznose:\n");
 
 	while (Address < FLASH_VALUES_END_ADDR)
 	{
-		data32 = *(__IO float *)Address;
+		data32 = *(uint32_t *)Address;
 
 		if ((data32 != 0) && (data32 != 0xFFFFFFFF))
 		{
 		    Address = Address + 4;
-		    LOG_INFO("%f\n", data32);
+		    LOG_INFO("%lu\n", data32);
 		}
 
 		else break;

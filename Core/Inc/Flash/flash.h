@@ -22,7 +22,7 @@
 #define ADDR_FLASH_SECTOR_7     ((uint32_t)0x08060000) /* Base address of Sector 7, 128 Kbytes */
 
 /* Exported functions ------------------------------------------------------- */
-int FlashWriteLog(float input_val);
+int FlashWriteLog(uint32_t input_val);
 void FlashReadLogs(void);
 
 #endif /* __FLASH_H */
