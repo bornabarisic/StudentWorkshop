@@ -155,7 +155,7 @@ void TemperatureToLCD(void)
 	sprintf(pdata, "%f", temperature);
 	LCDWriteData(1,0,&pdata[0]);
 
-	FlashWrite(temperature);
+	FlashWriteLog(temperature);
 
 	HAL_Delay(1000);
 

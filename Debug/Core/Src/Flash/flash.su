@@ -1,4 +1,2 @@
-../Core/Src/Flash/flash.c:28:5:FlashWrite	48	static
-../Core/Src/Flash/flash.c:179:6:FlashReadLogs	40	static
-../Core/Src/Flash/flash.c:210:17:GetSector	24	static
-../Core/Src/Flash/flash.c:254:17:GetSectorSize	24	static
+../Core/Src/Flash/flash.c:30:5:FlashWriteLog	40	static
+../Core/Src/Flash/flash.c:177:6:FlashReadLogs	40	static

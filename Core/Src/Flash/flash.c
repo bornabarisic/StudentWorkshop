@@ -3,9 +3,12 @@
 
 /* Private typedef -----------------------------------------------------------*/
 /* Private define ------------------------------------------------------------*/
-#define FLASH_USER_START_ADDR   ADDR_FLASH_SECTOR_4   /* Start @ of user Flash area */
-#define FLASH_USER_END_ADDR     ADDR_FLASH_SECTOR_4  +  GetSectorSize(ADDR_FLASH_SECTOR_4) -1 /* End @ of user Flash area : sector start address + sector size -1 */
-#define FLASH_VALUES_END_ADDR	ADDR_FLASH_SECTOR_4  +  10*sizeof(float)
+#define FLASH_USER_START_ADDR   ADDR_FLASH_SECTOR_4   	   /* Start @ of user Flash area */
+#define FLASH_USER_END_ADDR     ADDR_FLASH_SECTOR_5 - 1    /* End @ of user Flash area */
+#define FLASH_VALUES_END_ADDR	ADDR_FLASH_SECTOR_4  +  10*sizeof(float)	/* End @ of Flash area used for temperature logs */
+
+#define FIRST_SECTOR	FLASH_SECTOR_4
+#define NBOFSECTORS		1
 
 /* Private macro -------------------------------------------------------------*/
 /* Private variables ---------------------------------------------------------*/
@@ -15,8 +18,7 @@ static float values[10] = {0};
 static FLASH_EraseInitTypeDef EraseInitStruct;
 
 /* Private function prototypes -----------------------------------------------*/
-static uint32_t GetSector(uint32_t Address);
-static uint32_t GetSectorSize(uint32_t Sector);
+//FlashWrite, FlashErase, FlashVerify
 
 /* Public functions ---------------------------------------------------------*/
 
@@ -25,10 +27,10 @@ static uint32_t GetSectorSize(uint32_t Sector);
   * @param  val - Value to be written in flash
   * @retval 0 if successful
   */
-int FlashWrite(float input_val)
+int FlashWriteLog(float input_val)
 {
 	int retval = 0;
-	uint32_t FirstSector = 0, NbOfSectors = 0, SECTORError = 0, MemoryProgramStatus = 0;
+	uint32_t SECTORError = 0, MemoryProgramStatus = 0;
 	float data32 = 0;
 
     /* Check how many values are already written and fill the array with them */
@@ -80,15 +82,11 @@ int FlashWrite(float input_val)
   /* Erase the user Flash area
     (area defined by FLASH_USER_START_ADDR and FLASH_USER_END_ADDR) */
 
-  /* Get the 1st sector to erase */
-  FirstSector = GetSector(FLASH_USER_START_ADDR);
-  /* Get the number of sector to erase from 1st sector*/
-  NbOfSectors = GetSector(FLASH_USER_END_ADDR) - FirstSector + 1;
   /* Fill EraseInit structure*/
   EraseInitStruct.TypeErase     = FLASH_TYPEERASE_SECTORS;
   EraseInitStruct.VoltageRange  = FLASH_VOLTAGE_RANGE_3;
-  EraseInitStruct.Sector        = FirstSector;
-  EraseInitStruct.NbSectors     = NbOfSectors;
+  EraseInitStruct.Sector        = FIRST_SECTOR;
+  EraseInitStruct.NbSectors     = NBOFSECTORS;
 
   /* Note: If an erase operation in Flash memory also concerns data in the data or instruction cache,
      you have to make sure that these data are rewritten before they are accessed during code
@@ -201,71 +199,3 @@ void FlashReadLogs(void)
 }
 
 /* Private functions ---------------------------------------------------------*/
-
-/**
-  * @brief  Gets the sector of a given address
-  * @param  None
-  * @retval The sector of a given address
-  */
-static uint32_t GetSector(uint32_t Address)
-{
-  uint32_t sector = 0;
-
-  if((Address < ADDR_FLASH_SECTOR_1) && (Address >= ADDR_FLASH_SECTOR_0))
-  {
-    sector = FLASH_SECTOR_0;
-  }
-  else if((Address < ADDR_FLASH_SECTOR_2) && (Address >= ADDR_FLASH_SECTOR_1))
-  {
-    sector = FLASH_SECTOR_1;
-  }
-  else if((Address < ADDR_FLASH_SECTOR_3) && (Address >= ADDR_FLASH_SECTOR_2))
-  {
-    sector = FLASH_SECTOR_2;
-  }
-  else if((Address < ADDR_FLASH_SECTOR_4) && (Address >= ADDR_FLASH_SECTOR_3))
-  {
-    sector = FLASH_SECTOR_3;
-  }
-  else if((Address < ADDR_FLASH_SECTOR_5) && (Address >= ADDR_FLASH_SECTOR_4))
-  {
-    sector = FLASH_SECTOR_4;
-  }
-  else if((Address < ADDR_FLASH_SECTOR_6) && (Address >= ADDR_FLASH_SECTOR_5))
-  {
-    sector = FLASH_SECTOR_5;
-  }
-  else if((Address < ADDR_FLASH_SECTOR_7) && (Address >= ADDR_FLASH_SECTOR_6))
-  {
-    sector = FLASH_SECTOR_6;
-  }
-  else /* (Address < FLASH_END_ADDR) && (Address >= ADDR_FLASH_SECTOR_7) */
-  {
-    sector = FLASH_SECTOR_7;
-  }
-  return sector;
-}
-
-/**
-  * @brief  Gets sector Size
-  * @param  None
-  * @retval The size of a given sector
-  */
-static uint32_t GetSectorSize(uint32_t Sector)
-{
-  uint32_t sectorsize = 0x00;
-  if((Sector == FLASH_SECTOR_0) || (Sector == FLASH_SECTOR_1) || (Sector == FLASH_SECTOR_2) || (Sector == FLASH_SECTOR_3))
-  {
-    sectorsize = 16 * 1024;
-  }
-  else if(Sector == FLASH_SECTOR_4)
-  {
-    sectorsize = 64 * 1024;
-  }
-  else
-  {
-    sectorsize = 128 * 1024;
-  }
-  return sectorsize;
-}
-
