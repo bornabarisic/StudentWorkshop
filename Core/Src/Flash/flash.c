@@ -12,16 +12,16 @@
 
 /* Private macro -------------------------------------------------------------*/
 /* Private variables ---------------------------------------------------------*/
-static uint32_t values[10] = {0};
+static uint32_t temperature_logs[10] = {0};
 
 /*Variable used for Erase procedure*/
 static FLASH_EraseInitTypeDef EraseInitStruct;
 
 /* Private function prototypes -----------------------------------------------*/
-//FlashWrite, FlashErase, FlashVerify
+static int FlashReadAndAdd(uint32_t input_val);
 static int FlashErase(void);
-int FlashWrite(void);
-int FlashVerify(void);
+static int FlashWrite(void);
+static int FlashVerify(void);
 
 /* Public functions ---------------------------------------------------------*/
 
@@ -33,133 +33,31 @@ int FlashVerify(void);
 int FlashWriteLog(uint32_t input_val)
 {
 	int retval = 0;
-	uint32_t MemoryProgramStatus = 0;
-	uint32_t data32 = 0;
-	int index = 0;
 
+	/* Read previous logs from flash and append the new value */
+	retval = FlashReadAndAdd(input_val);
+	ASSERT(retval != 0);
 
-    /* Check how many values are already written and fill the array with them */
+	/* Unlock the Flash to enable the flash control register access */
+	HAL_FLASH_Unlock();
 
-	uint32_t Address = FLASH_USER_START_ADDR;
+	/* Erase the flash sector that will be used */
+	retval = FlashErase();
+	ASSERT(retval != 0);
 
-	while (Address < FLASH_VALUES_END_ADDR)
-	  {
-	    data32 = *(uint32_t *)Address;
+	/* Write the logs to flash */
+	retval = FlashWrite();
+	ASSERT(retval != 0);
 
-	    if (data32 != 0xFFFFFFFF)
-	    {
-	      values[index] = data32;
-	      index++;
-	      Address = Address + 4;
-	    }
+	/* Lock the Flash to disable the flash control register access (recommended
+       to protect the FLASH memory against possible unwanted operation) */
+	HAL_FLASH_Lock();
 
-	    else break;
-	  }
+	/* Verify that the data was written successfully */
+	retval = FlashVerify();
+	ASSERT(retval != 0);
 
-
-
-
-
-	/* Add the new value to the array so we can write them to flash */
-
-	if (index <= 9)
-	{
-		/* The array is not full yet, we can just append the value */
-		values[index] = input_val;
-	}
-	else
-	{
-		/* The array is full, we must shift all values to save the latest 10 logs */
-		index = 0;
-
-		while (index < 9)
-		{
-			values[index] = values[index+1];
-			index++;
-		}
-
-		/* Finally, write the new value at the 10th place in the array */
-		values[index] = input_val;
-
-	}
-
-
-
-
-
-  /* Unlock the Flash to enable the flash control register access */
-  HAL_FLASH_Unlock();
-
-
-  /* Erase the flash sector that will be used */
-  FlashErase();
-
-
-
-
-  /* Program the user Flash area word by word */
-
-  Address = FLASH_USER_START_ADDR;
-  index = 0;;
-
-  while ((Address < FLASH_VALUES_END_ADDR) && (values[index] != 0))
-  {
-    if (HAL_FLASH_Program(FLASH_TYPEPROGRAM_WORD, Address, *(uint32_t *)&values[index]) == HAL_OK)
-    {
-      Address = Address + 4;
-      index++;
-    }
-   else
-    {
-      /* Error occurred while writing data in Flash memory */
-	  LOG_ERR("Upisivanje u flash nije bilo uspjesno\n");
-      while (1)
-      {
-        //Wait forever
-      }
-    }
-  }
-
-  /* Lock the Flash to disable the flash control register access (recommended
-     to protect the FLASH memory against possible unwanted operation) */
-  HAL_FLASH_Lock();
-
-
-
-
-
-  /* Check if the programmed data is OK
-      MemoryProgramStatus = 0: data programmed correctly
-      MemoryProgramStatus != 0: number of words not programmed correctly */
-  Address = FLASH_USER_START_ADDR;
-  index = 0;
-  MemoryProgramStatus = 0x0;
-
-  while (Address < FLASH_VALUES_END_ADDR)
-  {
-    data32 = *(uint32_t *)Address;
-
-    if ((data32 != values[index]) && (data32 != 0xFFFFFFFF))
-    {
-      MemoryProgramStatus++;
-    }
-    Address = Address + 4;
-    index++;
-  }
-
-  /*Check if there is an issue to program data*/
-  if (MemoryProgramStatus == 0)
-  {
-    /* No error detected */
-	  LOG_ERR("Upisivanje u flash obavljeno uspjesno\n");
-  }
-  else
-  {
-    /* Error detected */
-	  LOG_ERR("Upisivanje u flash nije bilo uspjesno\n");
-	  retval = 1;
-  }
-  return retval;
+	return retval;
 }
 
 /**
@@ -189,6 +87,63 @@ void FlashReadLogs(void)
 }
 
 /* Private functions ---------------------------------------------------------*/
+
+/**
+  * @brief  Reads previous logs from flash and stores them in the array along with the new value
+  * @param  None
+  * @retval 0 - successful
+  */
+static int FlashReadAndAdd(uint32_t input_val)
+{
+	int retval = 0;
+
+	uint32_t data32 = 0;
+	uint32_t index = 0;
+
+	/* Check how many values are already written and fill the array with them */
+
+	uint32_t Address = FLASH_USER_START_ADDR;
+
+	while (Address < FLASH_VALUES_END_ADDR)
+	{
+		data32 = *(uint32_t *)Address;
+
+		if (data32 != 0xFFFFFFFF)
+		{
+			temperature_logs[index] = data32;
+		    index++;
+		    Address = Address + 4;
+		}
+
+		else break;
+	}
+
+
+	/* Add the new value to the array so we can write them to flash */
+
+	if (index <= 9)
+	{
+		/* The array is not full yet, we can just append the value */
+		temperature_logs[index] = input_val;
+	}
+	else
+	{
+		/* The array is full, we must shift all values to save the latest 10 logs */
+		index = 0;
+
+		while (index < 9)
+		{
+			temperature_logs[index] = temperature_logs[index+1];
+			index++;
+		}
+
+		/* Finally, write the new value at the 10th place in the array */
+
+		temperature_logs[index] = input_val;
+	}
+
+	return retval;
+}
 
 /**
   * @brief  Erases the flash sector
@@ -222,6 +177,83 @@ static int FlashErase(void)
 	*/
 	LOG_ERR("Brisanje flash sektora broj %u nije bilo uspjesno\n", (uint16_t)SECTORError);
 	retval = 1;
+	}
+
+	return retval;
+}
+
+/**
+  * @brief  Writes the logs in the flash sector
+  * @param  None
+  * @retval 0 - successful
+  */
+static int FlashWrite(void)
+{
+	int retval = 0;
+
+	/* Program the user Flash area word by word */
+
+	uint32_t Address = FLASH_USER_START_ADDR;
+	uint32_t index = 0;
+
+	while ((Address < FLASH_VALUES_END_ADDR) && (temperature_logs[index] != 0))
+	{
+	    if (HAL_FLASH_Program(FLASH_TYPEPROGRAM_WORD, Address, temperature_logs[index]) == HAL_OK)
+	    {
+	      Address = Address + 4;
+	      index++;
+	    }
+	    else
+	    {
+	      /* Error occurred while writing data in Flash memory */
+	      LOG_ERR("Upisivanje u flash nije bilo uspjesno\n");
+	      return retval = 1;
+	    }
+	}
+	return retval;
+}
+
+/**
+  * @brief  Verifies that the data was written successfully
+  * @param  None
+  * @retval 0 - successful
+  */
+static int FlashVerify(void)
+{
+	int retval = 0;
+
+	/* Check if the programmed data is OK
+	   MemoryProgramStatus = 0: data programmed correctly
+	   MemoryProgramStatus != 0: number of words not programmed correctly */
+
+	uint32_t Address = FLASH_USER_START_ADDR;
+	uint32_t index = 0;
+	uint32_t data32 = 0;
+	uint32_t MemoryProgramStatus = 0;
+
+	while (Address < FLASH_VALUES_END_ADDR)
+	{
+		data32 = *(uint32_t *)Address;
+
+	    if ((data32 != temperature_logs[index]) && (data32 != 0xFFFFFFFF))
+	    {
+	      MemoryProgramStatus++;
+	    }
+	    Address = Address + 4;
+	    index++;
+	}
+
+	/*Check if there is an issue to program data*/
+	if (MemoryProgramStatus == 0)
+	{
+	    /* No error detected */
+		LOG_ERR("Upisivanje u flash obavljeno uspjesno\n");
+	}
+	else
+	{
+	    /* Error detected */
+		LOG_ERR("Upisivanje u flash nije bilo uspjesno\n");
+		retval = 1;
 	}
 
 	return retval;
