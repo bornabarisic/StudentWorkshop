@@ -19,7 +19,9 @@ static FLASH_EraseInitTypeDef EraseInitStruct;
 
 /* Private function prototypes -----------------------------------------------*/
 //FlashWrite, FlashErase, FlashVerify
-
+static int FlashErase(void);
+int FlashWrite(void);
+int FlashVerify(void);
 /* Public functions ---------------------------------------------------------*/
 
 /**
@@ -30,7 +32,7 @@ static FLASH_EraseInitTypeDef EraseInitStruct;
 int FlashWriteLog(float input_val)
 {
 	int retval = 0;
-	uint32_t SECTORError = 0, MemoryProgramStatus = 0;
+	uint32_t MemoryProgramStatus = 0;
 	float data32 = 0;
 	int index = 0;
 
@@ -86,34 +88,9 @@ int FlashWriteLog(float input_val)
   /* Unlock the Flash to enable the flash control register access */
   HAL_FLASH_Unlock();
 
-  /* Erase the user Flash area
-    (area defined by FLASH_USER_START_ADDR and FLASH_USER_END_ADDR) */
 
-  /* Fill EraseInit structure*/
-  EraseInitStruct.TypeErase     = FLASH_TYPEERASE_SECTORS;
-  EraseInitStruct.VoltageRange  = FLASH_VOLTAGE_RANGE_3;
-  EraseInitStruct.Sector        = FIRST_SECTOR;
-  EraseInitStruct.NbSectors     = NBOFSECTORS;
-
-  /* Note: If an erase operation in Flash memory also concerns data in the data or instruction cache,
-     you have to make sure that these data are rewritten before they are accessed during code
-     execution. If this cannot be done safely, it is recommended to flush the caches by setting the
-     DCRST and ICRST bits in the FLASH_CR register. */
-  if (HAL_FLASHEx_Erase(&EraseInitStruct, &SECTORError) != HAL_OK)
-  {
-    /*
-      Error occurred while sector erase.
-      User can add here some code to deal with this error.
-      SECTORError will contain the faulty sector and then to know the code error on this sector,
-      user can call function 'HAL_FLASH_GetError()'
-    */
-	  LOG_ERR("Brisanje flash sektora nije bilo uspjesno\n");
-
-    while (1)
-    {
-      //Wait forever
-    }
-  }
+  /* Erase the flash sector that will be used */
+  FlashErase();
 
 
 
@@ -210,3 +187,40 @@ void FlashReadLogs(void)
 }
 
 /* Private functions ---------------------------------------------------------*/
+
+/**
+  * @brief  Erases the flash sector
+  * @param  None
+  * @retval 0 - successful
+  */
+static int FlashErase(void)
+{
+	int retval = 0;
+	uint32_t SECTORError = 0;
+
+	/* Erase the user Flash area
+	   (area defined by FLASH_USER_START_ADDR and FLASH_USER_END_ADDR) */
+
+	/* Fill EraseInit structure*/
+	EraseInitStruct.TypeErase     = FLASH_TYPEERASE_SECTORS;
+	EraseInitStruct.VoltageRange  = FLASH_VOLTAGE_RANGE_3;
+	EraseInitStruct.Sector        = FIRST_SECTOR;
+	EraseInitStruct.NbSectors     = NBOFSECTORS;
+
+	/* Note: If an erase operation in Flash memory also concerns data in the data or instruction cache,
+	   you have to make sure that these data are rewritten before they are accessed during code
+	   execution. If this cannot be done safely, it is recommended to flush the caches by setting the
+	   DCRST and ICRST bits in the FLASH_CR register. */
+	if (HAL_FLASHEx_Erase(&EraseInitStruct, &SECTORError) != HAL_OK)
+	{
+	/*
+	 Error occurred while sector erase.
+	 SECTORError will contain the faulty sector and then to know the code error on this sector,
+	 user can call function 'HAL_FLASH_GetError()'
+	*/
+	LOG_ERR("Brisanje flash sektora broj %u nije bilo uspjesno\n", (uint16_t)SECTORError);
+	retval = 1;
+	}
+
+	return retval;
+}
