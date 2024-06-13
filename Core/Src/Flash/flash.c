@@ -56,6 +56,8 @@ int FlashWriteLog(float input_val)
 
 	int input_val_int = (int)(input_val * PRESERVATION_FACTOR);
 
+	__enable_irq();
+
 	/* Read previous logs from flash and append the new value */
 	retval = FlashReadAndAdd(input_val_int);
 	ASSERT(retval != 0);
@@ -74,6 +76,8 @@ int FlashWriteLog(float input_val)
 	/* Lock the Flash to disable the flash control register access (recommended
        to protect the FLASH memory against possible unwanted operation) */
 	HAL_FLASH_Lock();
+
+	__enable_irq();
 
 	/* Verify that the data was written successfully */
 	retval = FlashVerify();
