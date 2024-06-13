@@ -10,8 +10,8 @@
 /* ----------------------------------------------------------------------------------- */
 
 typedef void (*fp_init_AHT20)(void);
-typedef int (*fp_get_temp)(void);
-typedef int (*fp_get_hum)(void);
+typedef float (*fp_get_temp)(void);
+typedef float (*fp_get_hum)(void);
 
 typedef struct AHT20_t
 {

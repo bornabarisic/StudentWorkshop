@@ -26,8 +26,8 @@ static void InitializeAHT20(void);
 static int AHT20_sensorInit(void);
 static bool AHT20_checkCalibration(void);
 static void AHT20_triggerMeasurement(void);
-static int GetTemperatureValue(void);
-static int GetHumidityValue(void);
+static float GetTemperatureValue(void);
+static float GetHumidityValue(void);
 
 /* ----------------------------------------------------------------------------------- */
 /* Private variables ----------------------------------------------------------------- */
@@ -131,7 +131,7 @@ void AHT20_triggerMeasurement(void)
     humidity <<= 4;
     humidity |= data[3] >> 4;
 
-    AHT20_interface.hum_val = ((float)humidity * 100) / 1048576;
+    AHT20_interface.hum_val = ((float)humidity * 100.0F) / 1048576.0F;
 
     uint32_t temp = data[3] & 0x0F;
     temp <<= 8;
@@ -139,17 +139,17 @@ void AHT20_triggerMeasurement(void)
     temp <<= 8;
     temp |= data[5];
 
-    AHT20_interface.temp_val = ((float)temp * 200 / 1048576) - 50;
+    AHT20_interface.temp_val = ((float)temp * 200.0F / 1048576.0F) - 50.0F;
 }
 
-static int GetTemperatureValue(void)
+static float GetTemperatureValue(void)
 {
 	AHT20_triggerMeasurement();
 
 	return AHT20_interface.temp_val;
 }
 
-static int GetHumidityValue(void)
+static float GetHumidityValue(void)
 {
 	AHT20_triggerMeasurement();
 

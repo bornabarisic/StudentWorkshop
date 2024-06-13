@@ -10,6 +10,26 @@
 #define FIRST_SECTOR	FLASH_SECTOR_4
 #define NBOFSECTORS		1
 
+/**
+ * @brief 	This factor is used for storing decimal spaces from float variable
+ * 			to integer so wen can save it into flash.
+ *
+ * @note	We want to save up to two decimal spaces and to achieve this float
+ * 			variable needs to be multiplied by PRESERVATION_FACTOR and then
+ * 			typecasted to uint32_t.
+ *
+ * @example
+ * 		float 	input_val 			= 45.896843
+ * 		int 	casted_input_value 	= (int)(input_val * PRESERVATION_FACTOR)
+ * 									= 4589
+ * 		Value 4589 is written to flash.
+ * 		When reading from flash:
+ * 		int 	read_input_val 	= 4589
+ * 		float 	input_value 	= (float)read_input_val / PRESERVATION_FACTOR
+ * 								= 45.89
+*/
+#define PRESERVATION_FACTOR 	( 100.0F )
+
 /* Private macro -------------------------------------------------------------*/
 /* Private variables ---------------------------------------------------------*/
 static uint32_t temperature_logs[10] = {0};
@@ -30,12 +50,14 @@ static int FlashVerify(void);
   * @param  val - Value to be written in flash
   * @retval 0 if successful
   */
-int FlashWriteLog(uint32_t input_val)
+int FlashWriteLog(float input_val)
 {
 	int retval = 0;
 
+	int input_val_int = (int)(input_val * PRESERVATION_FACTOR);
+
 	/* Read previous logs from flash and append the new value */
-	retval = FlashReadAndAdd(input_val);
+	retval = FlashReadAndAdd(input_val_int);
 	ASSERT(retval != 0);
 
 	/* Unlock the Flash to enable the flash control register access */
@@ -69,6 +91,7 @@ void FlashReadLogs(void)
 {
 	uint32_t Address = FLASH_USER_START_ADDR;
 	uint32_t data32 = 0;
+	float data32_float = 0.0F;
 
 	LOG_INFO("Prethodna mjerenje iznose:\n");
 
@@ -79,7 +102,8 @@ void FlashReadLogs(void)
 		if ((data32 != 0) && (data32 != 0xFFFFFFFF))
 		{
 		    Address = Address + 4;
-		    LOG_INFO("%lu\n", data32);
+		    data32_float = (float)data32 / PRESERVATION_FACTOR;
+		    LOG_INFO("%.2f\n", data32_float);
 		}
 
 		else break;

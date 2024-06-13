@@ -144,7 +144,7 @@ void WaitForButton(void)
   */
 void TemperatureToLCD(void)
 {
-	float temperature =  AHT20_GetTemp();
+	float temperature = AHT20_GetTemp();
 
 	LCDClearScreen();
 
@@ -152,7 +152,7 @@ void TemperatureToLCD(void)
 	sprintf(pdata, "%s", "Iznos temp:");
 	LCDWriteData(0,0,&pdata[0]);
 
-	sprintf(pdata, "%f", temperature);
+	sprintf(pdata, "%.2f", temperature);
 	LCDWriteData(1,0,&pdata[0]);
 
 	FlashWriteLog(temperature);

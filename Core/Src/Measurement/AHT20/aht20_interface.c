@@ -24,7 +24,7 @@ void AHT20Init(void)
 	paht20->init();
 }
 
-int AHT20_GetTemp(void)
+float AHT20_GetTemp(void)
 {
 	AHT20_t *paht20 = GetAHT20Interface();
 
@@ -34,7 +34,7 @@ int AHT20_GetTemp(void)
 
 }
 
-int AHT20_GetHum(void)
+float AHT20_GetHum(void)
 {
 	AHT20_t *paht20 = GetAHT20Interface();
 
