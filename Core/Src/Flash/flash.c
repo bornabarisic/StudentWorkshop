@@ -56,7 +56,7 @@ int FlashWriteLog(float input_val)
 
 	int input_val_int = (int)(input_val * PRESERVATION_FACTOR);
 
-	__enable_irq();
+	__disable_irq();
 
 	/* Read previous logs from flash and append the new value */
 	retval = FlashReadAndAdd(input_val_int);
