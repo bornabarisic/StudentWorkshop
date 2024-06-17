@@ -1,0 +1,12 @@
+*.o
+*.mk
+*.list
+*.launch
+*.elf
+*.cyclo
+*.su
+*.prefs
+*.xml
+**/Debug
+**/Release
+**/.settings
