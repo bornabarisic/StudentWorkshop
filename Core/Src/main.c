@@ -9,6 +9,7 @@
 /* Defines --------------------------------------------------------------------------- */
 /* ----------------------------------------------------------------------------------- */
 
+/* Choose a delay for toggling the green LED. Set the time in milliseconds */
 #define LED_TOGGLE_DELAY_IN_MS	( 1000U ) /* Delay for 1 second */
 
 /* ----------------------------------------------------------------------------------- */
@@ -86,7 +87,7 @@ int main(void)
 	while (1)
 	{
 		/**
-		 * @note 	Un-comment one at the time function call to run and check the
+		 * @note 	Un-comment (one at the time) function call to run and check the
 		 * 			solution for week 1 practice with GPIO module.
 		 */
 //		BlinkLEDWithPushButton();
