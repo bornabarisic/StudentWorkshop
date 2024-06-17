@@ -1,6 +1,0 @@
-../Core/Src/Flash/flash.c:33:5:FlashWriteLog	5
-../Core/Src/Flash/flash.c:68:6:FlashReadLogs	4
-../Core/Src/Flash/flash.c:96:12:FlashReadAndAdd	5
-../Core/Src/Flash/flash.c:153:12:FlashErase	2
-../Core/Src/Flash/flash.c:190:12:FlashWrite	4
-../Core/Src/Flash/flash.c:221:12:FlashVerify	5

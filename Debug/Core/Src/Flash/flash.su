@@ -1,6 +1,0 @@
-../Core/Src/Flash/flash.c:33:5:FlashWriteLog	24	static
-../Core/Src/Flash/flash.c:68:6:FlashReadLogs	16	static
-../Core/Src/Flash/flash.c:96:12:FlashReadAndAdd	32	static
-../Core/Src/Flash/flash.c:153:12:FlashErase	16	static
-../Core/Src/Flash/flash.c:190:12:FlashWrite	32	static
-../Core/Src/Flash/flash.c:221:12:FlashVerify	32	static
