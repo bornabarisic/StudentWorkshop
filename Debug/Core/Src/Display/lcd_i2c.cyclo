@@ -1,3 +1,0 @@
-../Core/Src/Display/lcd_i2c.c:32:13:InitializeLCDI2CGPIOPins	1
-../Core/Src/Display/lcd_i2c.c:53:5:InitializeLCDI2C	2
-../Core/Src/Display/lcd_i2c.c:78:5:TransmitI2CDataToLCD	2

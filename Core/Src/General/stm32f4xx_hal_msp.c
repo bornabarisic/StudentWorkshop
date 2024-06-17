@@ -1,45 +1,20 @@
-
 /* ----------------------------------------------------------------------------------- */
 /* Includes -------------------------------------------------------------------------- */
 /* ----------------------------------------------------------------------------------- */
 
-#include <string.h>
-#include <stdio.h>
-
-#include "aht20_interface.h"
-#include "aht20_driver.h"
-#include "log.h"
-
+#include "stm32f4xx_hal.h"
 
 /* ----------------------------------------------------------------------------------- */
 /* Public function definitions ------------------------------------------------------- */
 /* ----------------------------------------------------------------------------------- */
 
-void AHT20Init(void)
+/**
+  * Initializes the Global MSP.
+  */
+void HAL_MspInit(void)
 {
-	AHT20_t *paht20 = GetAHT20Interface();
+	__HAL_RCC_SYSCFG_CLK_ENABLE();
+	__HAL_RCC_PWR_CLK_ENABLE();
 
-	ASSERT(paht20 == NULL);
-
-	paht20->init();
+	HAL_NVIC_SetPriorityGrouping(NVIC_PRIORITYGROUP_0);
 }
-
-float AHT20_GetTemp(void)
-{
-	AHT20_t *paht20 = GetAHT20Interface();
-
-	ASSERT(paht20 == NULL);
-
-	return paht20->get_temp();
-
-}
-
-float AHT20_GetHum(void)
-{
-	AHT20_t *paht20 = GetAHT20Interface();
-
-	ASSERT(paht20 == NULL);
-
-	return paht20->get_humidity();
-}
-

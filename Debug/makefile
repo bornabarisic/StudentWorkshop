@@ -11,11 +11,8 @@ RM := rm -rf
 -include sources.mk
 -include Drivers/STM32F4xx_HAL_Driver/Src/subdir.mk
 -include Core/Startup/subdir.mk
--include Core/Src/Measurement/Potentiometer/subdir.mk
--include Core/Src/Measurement/AHT20/subdir.mk
--include Core/Src/Logger/subdir.mk
--include Core/Src/Flash/subdir.mk
--include Core/Src/Display/subdir.mk
+-include Core/Src/General/subdir.mk
+-include Core/Src/GPIO/subdir.mk
 -include Core/Src/subdir.mk
 -include objects.mk
 
@@ -65,8 +62,8 @@ all: main-build
 main-build: Ljetne_prakse.elf secondary-outputs
 
 # Tool invocations
-Ljetne_prakse.elf Ljetne_prakse.map: $(OBJS) $(USER_OBJS) C:\Users\toni.marinkovic2\STM32CubeIDE\workspace_1.14.1\Ljetne_prakse\STM32F446RETX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
-	arm-none-eabi-gcc -o "Ljetne_prakse.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m4 -T"C:\Users\toni.marinkovic2\STM32CubeIDE\workspace_1.14.1\Ljetne_prakse\STM32F446RETX_FLASH.ld" --specs=nosys.specs -Wl,-Map="Ljetne_prakse.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -u _printf_float -Wl,--start-group -lc -lm -Wl,--end-group
+Ljetne_prakse.elf Ljetne_prakse.map: $(OBJS) $(USER_OBJS) D:\Ljetne_prakse\STM32F446RETX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
+	arm-none-eabi-gcc -o "Ljetne_prakse.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m4 -T"D:\Ljetne_prakse\STM32F446RETX_FLASH.ld" --specs=nosys.specs -Wl,-Map="Ljetne_prakse.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
 	@echo 'Finished building target: $@'
 	@echo ' '
 

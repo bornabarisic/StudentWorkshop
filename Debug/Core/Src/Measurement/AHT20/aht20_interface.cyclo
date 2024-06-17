@@ -1,3 +1,0 @@
-../Core/Src/Measurement/AHT20/aht20_interface.c:18:6:AHT20Init	2
-../Core/Src/Measurement/AHT20/aht20_interface.c:27:5:AHT20_GetTemp	2
-../Core/Src/Measurement/AHT20/aht20_interface.c:37:5:AHT20_GetHum	2

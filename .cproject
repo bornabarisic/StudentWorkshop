@@ -164,14 +164,6 @@
 		<project id="Ljetne_prakse.null.271166414" name="Ljetne_prakse"/>
 	</storageModule>
 	<storageModule moduleId="org.eclipse.cdt.core.LanguageSettingsProviders"/>
-	<storageModule moduleId="scannerConfiguration">
-		<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId=""/>
-		<scannerConfigBuildInfo instanceId="com.st.stm32cube.ide.mcu.gnu.managedbuild.config.exe.debug.1222422902;com.st.stm32cube.ide.mcu.gnu.managedbuild.config.exe.debug.1222422902.;com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.c.compiler.1104244457;com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.c.compiler.input.c.975253606">
-			<autodiscovery enabled="false" problemReportingEnabled="true" selectedProfileId=""/>
-		</scannerConfigBuildInfo>
-		<scannerConfigBuildInfo instanceId="com.st.stm32cube.ide.mcu.gnu.managedbuild.config.exe.release.2045857164;com.st.stm32cube.ide.mcu.gnu.managedbuild.config.exe.release.2045857164.;com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.c.compiler.509605801;com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.c.compiler.input.c.466935214">
-			<autodiscovery enabled="false" problemReportingEnabled="true" selectedProfileId=""/>
-		</scannerConfigBuildInfo>
-	</storageModule>
 	<storageModule moduleId="refreshScope"/>
+	<storageModule moduleId="scannerConfiguration"/>
 </cproject>

@@ -1,4 +1,0 @@
-../Core/Src/Measurement/Potentiometer/adc_if.c:31:13:ADC1_Init_Pins	48	static
-../Core/Src/Measurement/Potentiometer/adc_if.c:55:6:ADC1_Init	24	static
-../Core/Src/Measurement/Potentiometer/adc_if.c:96:6:LED_control_with_ADC	8	static
-../Core/Src/Measurement/Potentiometer/adc_if.c:120:6:LCD_control_with_ADC	24	static

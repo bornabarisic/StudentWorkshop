@@ -1,11 +1,12 @@
-#ifndef INC_LCD_I2C_H_
-#define INC_LCD_I2C_H_
+#ifndef __GPIO_H
+#define __GPIO_H
 
 /* ----------------------------------------------------------------------------------- */
 /* Public function declarations ------------------------------------------------------ */
 /* ----------------------------------------------------------------------------------- */
 
-int InitializeLCDI2C(void);
-int TransmitI2CDataToLCD(char *pdata);
+void InitializeBoardSupport(void);
+void BlinkLEDWithPushButton(void);
+void BlinkLEDWithConstantDelay(int delay_ms);
 
-#endif /* INC_LCD_I2C_H_*/
+#endif /* __GPIO_H */
