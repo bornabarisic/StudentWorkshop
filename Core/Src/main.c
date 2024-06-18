@@ -2,25 +2,62 @@
 /* Includes -------------------------------------------------------------------------- */
 /* ----------------------------------------------------------------------------------- */
 
+#include <math.h>
+
 #include "stm32f4xx_hal.h"
 #include "gpio.h"
+#include "ADC.h"
 
 /* ----------------------------------------------------------------------------------- */
 /* Defines --------------------------------------------------------------------------- */
 /* ----------------------------------------------------------------------------------- */
 
-/* Choose a delay for toggling the green LED. Set the time in milliseconds */
-#define LED_TOGGLE_DELAY_IN_MS	( 1000U ) /* Delay for 1 second */
+#define ADC_DATA_RESOLUTION  	( 4096U ) 	/* 12 bit */
+#define LED_BLINK_REF_TIME		( 1000U ) 	/* Reference time, 1ms */
 
 /* ----------------------------------------------------------------------------------- */
 /* Private function definitions ------------------------------------------------------ */
 /* ----------------------------------------------------------------------------------- */
 
 /**
+ * @brief	This function is calculating delay in milliseconds with linear
+ * 			characteristics
+ *
+ * @retval	int delay
+ */
+static int CalculateDelayLinChar(uint16_t adc_data)
+{
+	/* Calculate the delay factor */
+	float delay_factor = (float)adc_data/(float)ADC_DATA_RESOLUTION;
+
+	/* Calculate the delay in milliseconds */
+	int delay = (int)(LED_BLINK_REF_TIME * delay_factor);
+
+	return delay;
+}
+
+/**
+ * @brief	This function is calculating delay in milliseconds with exponential
+ * 			characteristics
+ *
+ * @retval	int delay
+ */
+static int CalculateDelayExpChar(uint16_t adc_data)
+{
+	/* Calculate the delay factor */
+	float delay_factor = 0.1 * pow(1.0005623126, (float)adc_data);
+
+	/* Calculate the delay in milliseconds */
+	int delay = (int)(LED_BLINK_REF_TIME * delay_factor);
+
+	return delay;
+}
+
+/**
   * @brief System Clock Configuration
   * @retval None
   */
-void SystemClock_Config(void)
+static void SystemClock_Config(void)
 {
 	RCC_OscInitTypeDef RCC_OscInitStruct = {0};
 	RCC_ClkInitTypeDef RCC_ClkInitStruct = {0};
@@ -81,16 +118,22 @@ int main(void)
 	/* Configure the system clock */
 	SystemClock_Config();
 
-	/* Initialize all configured peripherals */
 	InitializeBoardSupport();
+
+	InitializeADC();
 
 	while (1)
 	{
-		/**
-		 * @note 	Un-comment (one at the time) function call to run and check the
-		 * 			solution for week 1 practice with GPIO module.
-		 */
-//		BlinkLEDWithPushButton();
-//		BlinkLEDWithConstantDelay(LED_TOGGLE_DELAY_IN_MS);
+		/* Read the value of the ADC conversion */
+		uint16_t adc_value = ReadADCData();
+
+		/* Calculate delay with linear characteristics */
+		int delay_ms = CalculateDelayLinChar(adc_value);
+
+		/* Calculate delay with Logarithimc characteristics */
+//		int delay_ms = CalculateDelayExpChar(adc_value);
+
+		/* Send the  */
+		BlinkLEDWithConstantDelay(delay_ms);
 	}
 }
