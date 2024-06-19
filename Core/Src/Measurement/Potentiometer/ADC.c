@@ -14,6 +14,11 @@
 
 #define ADC_POLL_TIMEOUT_IN_MS	( 1000U )
 
+#define MIN_TEMP			( 0.0F ) 	/* In celsius */
+#define MAX_TEMP			( 50.0F )	/* In celsius */
+#define MAX_ADC_VALUE		( 4095U )
+#define CORRECTION_FACTOR	( (MAX_TEMP - MIN_TEMP ) / (float)MAX_ADC_VALUE )
+
 /* ----------------------------------------------------------------------------------- */
 /* Private variables ----------------------------------------------------------------- */
 /* ----------------------------------------------------------------------------------- */
@@ -41,16 +46,12 @@ static void InitializeADCGPIOPins(void)
 	HAL_GPIO_Init(POT_GPIO_PORT, &GPIO_InitStruct);
 }
 
-/* ----------------------------------------------------------------------------------- */
-/* Public function definitions ------------------------------------------------------- */
-/* ----------------------------------------------------------------------------------- */
-
 /**
-  * @brief ADC1 Initialization Function
-  * @param None
+  * @brief 	ADC1 Initialization Function
+  * @param 	None
   * @retval None
   */
-void InitializeADC(void)
+static void InitializeADC(void)
 {
 	InitializeADCGPIOPins();
 
@@ -98,7 +99,7 @@ void InitializeADC(void)
   * @brief  This function is used to for reading ADC value.
   * @retval uint16_t raw value from the ADC DR
   */
-uint16_t ReadADCData(void)
+static uint16_t ReadADCData(void)
 {
 	uint16_t read_value = 0;
 
@@ -111,4 +112,37 @@ uint16_t ReadADCData(void)
 	HAL_ADC_Stop(&hadc1);
 
 	return read_value;
+}
+
+/**
+ * @brief 	This function is used to simulate temperature sensor with
+ * 			potentiometer and ADC peripheral.
+ */
+static float TranslateADCValueToTemperature(void)
+{
+	uint16_t adc_data = ReadADCData();
+
+	float temperature = ( CORRECTION_FACTOR * (float)adc_data ) + MIN_TEMP;
+
+	return temperature;
+}
+
+/* ------------------------------------------------------------------------------------*/
+/* Public variables -------------------------------------------------------------------*/
+/* ------------------------------------------------------------------------------------*/
+
+static measurements_interface_t adc_interface =
+{
+	.init_measurement_handler 	= InitializeADC,
+	.get_temp_handler			= TranslateADCValueToTemperature,
+	.get_hum_handler			= NULL,
+};
+
+/* ------------------------------------------------------------------------------------*/
+/* Public function definitions --------------------------------------------------------*/
+/* ------------------------------------------------------------------------------------*/
+
+measurements_interface_t *GetADCInterface(void)
+{
+	return &adc_interface;
 }

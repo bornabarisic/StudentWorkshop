@@ -2,59 +2,23 @@
 /* Includes -------------------------------------------------------------------------- */
 /* ----------------------------------------------------------------------------------- */
 
-#include <math.h>
-
 #include "stm32f4xx_hal.h"
-#include "gpio.h"
-#include "ADC.h"
+
+#include "measurement.h"
 
 /* ----------------------------------------------------------------------------------- */
-/* Defines --------------------------------------------------------------------------- */
+/* Private variables ----------------------------------------------------------------- */
 /* ----------------------------------------------------------------------------------- */
 
-#define ADC_DATA_RESOLUTION  	( 4096U ) 	/* 12 bit */
-#define LED_BLINK_REF_TIME		( 1000U ) 	/* Reference time, 1ms */
+float temperature = 0.0F;
+float humidity = 0.0F;
 
 /* ----------------------------------------------------------------------------------- */
 /* Private function definitions ------------------------------------------------------ */
 /* ----------------------------------------------------------------------------------- */
 
 /**
- * @brief	This function is calculating delay in milliseconds with linear
- * 			characteristics
- *
- * @retval	int delay
- */
-static int CalculateDelayLinChar(uint16_t adc_data)
-{
-	/* Calculate the delay factor */
-	float delay_factor = (float)adc_data/(float)ADC_DATA_RESOLUTION;
-
-	/* Calculate the delay in milliseconds */
-	int delay = (int)(LED_BLINK_REF_TIME * delay_factor);
-
-	return delay;
-}
-
-/**
- * @brief	This function is calculating delay in milliseconds with exponential
- * 			characteristics
- *
- * @retval	int delay
- */
-static int CalculateDelayExpChar(uint16_t adc_data)
-{
-	/* Calculate the delay factor */
-	float delay_factor = 0.1 * pow(1.0005623126, (float)adc_data);
-
-	/* Calculate the delay in milliseconds */
-	int delay = (int)(LED_BLINK_REF_TIME * delay_factor);
-
-	return delay;
-}
-
-/**
-  * @brief System Clock Configuration
+  * @brief 	System Clock Configuration
   * @retval None
   */
 static void SystemClock_Config(void)
@@ -118,22 +82,12 @@ int main(void)
 	/* Configure the system clock */
 	SystemClock_Config();
 
-	InitializeBoardSupport();
-
-	InitializeADC();
+	InitializeMeasurements(MEASUREMENT_SRC_ADC);
 
 	while (1)
 	{
-		/* Read the value of the ADC conversion */
-		uint16_t adc_value = ReadADCData();
-
-		/* Calculate delay with linear characteristics */
-		int delay_ms = CalculateDelayLinChar(adc_value);
-
-		/* Calculate delay with Logarithimc characteristics */
-//		int delay_ms = CalculateDelayExpChar(adc_value);
-
-		/* Send the  */
-		BlinkLEDWithConstantDelay(delay_ms);
+		temperature = GetTemperature();
+		humidity 	= GetHumidity();
+		HAL_Delay(2000);
 	}
 }

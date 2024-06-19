@@ -46,6 +46,9 @@
 									<listOptionValue builtIn="false" value="../Core/Inc"/>
 									<listOptionValue builtIn="false" value="../Core/Inc/General"/>
 									<listOptionValue builtIn="false" value="../Core/Inc/GPIO"/>
+									<listOptionValue builtIn="false" value="../Core/Inc/Measurement"/>
+									<listOptionValue builtIn="false" value="../Core/Inc/Measurement/AHT20"/>
+									<listOptionValue builtIn="false" value="../Core/Inc/Measurement/Potentiometer"/>
 									<listOptionValue builtIn="false" value="../Drivers/STM32F4xx_HAL_Driver/Inc"/>
 									<listOptionValue builtIn="false" value="../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy"/>
 									<listOptionValue builtIn="false" value="../Drivers/CMSIS/Device/ST/STM32F4xx/Include"/>
@@ -124,6 +127,9 @@
 									<listOptionValue builtIn="false" value="../Core/Inc"/>
 									<listOptionValue builtIn="false" value="../Core/Inc/General"/>
 									<listOptionValue builtIn="false" value="../Core/Inc/GPIO"/>
+									<listOptionValue builtIn="false" value="../Core/Inc/Measurement"/>
+									<listOptionValue builtIn="false" value="../Core/Inc/Measurement/AHT20"/>
+									<listOptionValue builtIn="false" value="../Core/Inc/Measurement/Potentiometer"/>
 									<listOptionValue builtIn="false" value="../Drivers/STM32F4xx_HAL_Driver/Inc"/>
 									<listOptionValue builtIn="false" value="../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy"/>
 									<listOptionValue builtIn="false" value="../Drivers/CMSIS/Device/ST/STM32F4xx/Include"/>
