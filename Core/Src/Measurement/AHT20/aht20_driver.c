@@ -52,7 +52,10 @@ static void AHT20Initialize(void)
 
 	aht20_state = InitializeAHT20I2C();
 
-//	ASSERT(aht20_state != AHT20_OK);
+	if (aht20_state != AHT20_OK)
+	{
+		while(1);
+	}
 
 	HAL_Delay(40);
 
@@ -117,7 +120,10 @@ static void AHT20_triggerMeasurement(void)
 
     aht20_state = ReceiveI2CDataFromAHT20(data, 6); // Read all data
 
-//    ASSERT(aht20_state != AHT20_OK);
+    if (aht20_state != AHT20_OK)
+    {
+    	while(1);
+    }
 
     // Convert data for reading and store in variable
     uint32_t humidity = data[1];

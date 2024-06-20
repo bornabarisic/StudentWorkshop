@@ -2,16 +2,29 @@
 /* Includes -------------------------------------------------------------------------- */
 /* ----------------------------------------------------------------------------------- */
 
+#include <stdio.h>
+
 #include "stm32f4xx_hal.h"
 
 #include "measurement.h"
+#include "lcd_display.h"
+
+/* ----------------------------------------------------------------------------------- */
+/* Defines --------------------------------------------------------------------------- */
+/* ----------------------------------------------------------------------------------- */
+
+#define LCD_WRITE_UPPER_ROW		0, 0 	/* row index, column index */
+#define LCD_WRITE_LOWER_ROW 	1, 0 	/* row index, column index */
 
 /* ----------------------------------------------------------------------------------- */
 /* Private variables ----------------------------------------------------------------- */
 /* ----------------------------------------------------------------------------------- */
 
-float temperature = 0.0F;
-float humidity = 0.0F;
+static float temperature = 0.0F;
+static float humidity 	 = 0.0F;
+
+static char upper_lcd_row_buffer[16] = {0};
+static char lower_lcd_row_buffer[16] = {0};
 
 /* ----------------------------------------------------------------------------------- */
 /* Private function definitions ------------------------------------------------------ */
@@ -71,8 +84,8 @@ static void SystemClock_Config(void)
 /* ----------------------------------------------------------------------------------- */
 
 /**
-  * @brief  	The application entry point.
-  * @retval 	int
+  * @brief  The application entry point.
+  * @retval int
   */
 int main(void)
 {
@@ -82,12 +95,23 @@ int main(void)
 	/* Configure the system clock */
 	SystemClock_Config();
 
-	InitializeMeasurements(MEASUREMENT_SRC_ADC);
+	InitializeMeasurements(MEASUREMENT_SRC_I2C);
+
+	InitializeLCD();
 
 	while (1)
 	{
 		temperature = GetTemperature();
 		humidity 	= GetHumidity();
+
+		sprintf(upper_lcd_row_buffer, "Temp: %.2f Cel", temperature);
+		sprintf(lower_lcd_row_buffer, "Hum:  %.2f Pct", humidity);
+
+		LCDClearScreen();
+
+		LCDWriteData(LCD_WRITE_UPPER_ROW, upper_lcd_row_buffer);
+		LCDWriteData(LCD_WRITE_LOWER_ROW, lower_lcd_row_buffer);
+
 		HAL_Delay(2000);
 	}
 }
