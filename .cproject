@@ -25,7 +25,7 @@
 							<option id="com.st.stm32cube.ide.mcu.gnu.managedbuild.option.target_board.119186284" name="Board" superClass="com.st.stm32cube.ide.mcu.gnu.managedbuild.option.target_board" useByScannerDiscovery="false" value="NUCLEO-F446RE" valueType="string"/>
 							<option id="com.st.stm32cube.ide.mcu.gnu.managedbuild.option.defaults.775431155" name="Defaults" superClass="com.st.stm32cube.ide.mcu.gnu.managedbuild.option.defaults" useByScannerDiscovery="false" value="com.st.stm32cube.ide.common.services.build.inputs.revA.1.0.6 || Debug || true || Executable || com.st.stm32cube.ide.mcu.gnu.managedbuild.option.toolchain.value.workspace || NUCLEO-F446RE || 0 || 0 || arm-none-eabi- || ${gnu_tools_for_stm32_compiler_path} || ../Core/Inc | ../Drivers/STM32F4xx_HAL_Driver/Inc | ../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy | ../Drivers/CMSIS/Device/ST/STM32F4xx/Include | ../Drivers/CMSIS/Include ||  ||  || USE_HAL_DRIVER | STM32F446xx ||  || Drivers | Core/Startup | Core ||  ||  || ${workspace_loc:/${ProjName}/STM32F446RETX_FLASH.ld} || true || NonSecure ||  || secure_nsclib.o ||  || None ||  ||  || " valueType="string"/>
 							<option id="com.st.stm32cube.ide.mcu.debug.option.cpuclock.666962562" name="Cpu clock frequence" superClass="com.st.stm32cube.ide.mcu.debug.option.cpuclock" useByScannerDiscovery="false" value="84" valueType="string"/>
-							<option id="com.st.stm32cube.ide.mcu.gnu.managedbuild.option.nanoprintffloat.1027370016" superClass="com.st.stm32cube.ide.mcu.gnu.managedbuild.option.nanoprintffloat" value="true" valueType="boolean"/>
+							<option id="com.st.stm32cube.ide.mcu.gnu.managedbuild.option.nanoprintffloat.1027370016" name="Use float with printf from newlib-nano (-u _printf_float)" superClass="com.st.stm32cube.ide.mcu.gnu.managedbuild.option.nanoprintffloat" useByScannerDiscovery="false" value="true" valueType="boolean"/>
 							<targetPlatform archList="all" binaryParser="org.eclipse.cdt.core.ELF" id="com.st.stm32cube.ide.mcu.gnu.managedbuild.targetplatform.1879843516" isAbstract="false" osList="all" superClass="com.st.stm32cube.ide.mcu.gnu.managedbuild.targetplatform"/>
 							<builder buildPath="${workspace_loc:/Ljetne_prakse}/Debug" id="com.st.stm32cube.ide.mcu.gnu.managedbuild.builder.949609701" keepEnvironmentInBuildfile="false" managedBuildOn="true" name="Gnu Make Builder" parallelBuildOn="true" parallelizationNumber="optimal" superClass="com.st.stm32cube.ide.mcu.gnu.managedbuild.builder"/>
 							<tool id="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.assembler.1088770820" name="MCU GCC Assembler" superClass="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.assembler">
@@ -48,6 +48,7 @@
 									<listOptionValue builtIn="false" value="../Core/Inc/Display"/>
 									<listOptionValue builtIn="false" value="../Core/Inc/General"/>
 									<listOptionValue builtIn="false" value="../Core/Inc/GPIO"/>
+									<listOptionValue builtIn="false" value="../Core/Inc/Logger"/>
 									<listOptionValue builtIn="false" value="../Core/Inc/Measurement"/>
 									<listOptionValue builtIn="false" value="../Core/Inc/Measurement/AHT20"/>
 									<listOptionValue builtIn="false" value="../Core/Inc/Measurement/Potentiometer"/>
@@ -130,6 +131,7 @@
 									<listOptionValue builtIn="false" value="../Core/Inc/Display"/>
 									<listOptionValue builtIn="false" value="../Core/Inc/General"/>
 									<listOptionValue builtIn="false" value="../Core/Inc/GPIO"/>
+									<listOptionValue builtIn="false" value="../Core/Inc/Logger"/>
 									<listOptionValue builtIn="false" value="../Core/Inc/Measurement"/>
 									<listOptionValue builtIn="false" value="../Core/Inc/Measurement/AHT20"/>
 									<listOptionValue builtIn="false" value="../Core/Inc/Measurement/Potentiometer"/>
@@ -177,6 +179,21 @@
 		<project id="Ljetne_prakse.null.271166414" name="Ljetne_prakse"/>
 	</storageModule>
 	<storageModule moduleId="org.eclipse.cdt.core.LanguageSettingsProviders"/>
-	<storageModule moduleId="refreshScope"/>
-	<storageModule moduleId="scannerConfiguration"/>
+	<storageModule moduleId="refreshScope" versionNumber="2">
+		<configuration configurationName="Debug">
+			<resource resourceType="PROJECT" workspacePath="/Ljetne_prakse"/>
+		</configuration>
+		<configuration configurationName="Release">
+			<resource resourceType="PROJECT" workspacePath="/Ljetne_prakse"/>
+		</configuration>
+	</storageModule>
+	<storageModule moduleId="scannerConfiguration">
+		<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId=""/>
+		<scannerConfigBuildInfo instanceId="com.st.stm32cube.ide.mcu.gnu.managedbuild.config.exe.debug.1222422902;com.st.stm32cube.ide.mcu.gnu.managedbuild.config.exe.debug.1222422902.;com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.c.compiler.1104244457;com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.c.compiler.input.c.975253606">
+			<autodiscovery enabled="false" problemReportingEnabled="true" selectedProfileId=""/>
+		</scannerConfigBuildInfo>
+		<scannerConfigBuildInfo instanceId="com.st.stm32cube.ide.mcu.gnu.managedbuild.config.exe.release.2045857164;com.st.stm32cube.ide.mcu.gnu.managedbuild.config.exe.release.2045857164.;com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.c.compiler.509605801;com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.c.compiler.input.c.466935214">
+			<autodiscovery enabled="false" problemReportingEnabled="true" selectedProfileId=""/>
+		</scannerConfigBuildInfo>
+	</storageModule>
 </cproject>

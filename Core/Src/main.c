@@ -8,6 +8,7 @@
 
 #include "measurement.h"
 #include "lcd_display.h"
+#include "log.h"
 
 /* ----------------------------------------------------------------------------------- */
 /* Defines --------------------------------------------------------------------------- */
@@ -58,10 +59,7 @@ static void SystemClock_Config(void)
 	RCC_OscInitStruct.PLL.PLLQ 				= 2;
 	RCC_OscInitStruct.PLL.PLLR 				= 2;
 
-	if (HAL_RCC_OscConfig(&RCC_OscInitStruct) != HAL_OK)
-	{
-		while(1);
-	}
+	ASSERT(HAL_RCC_OscConfig(&RCC_OscInitStruct) != HAL_OK);
 
 	/* Initializes the CPU, AHB and APB buses clocks */
 	RCC_ClkInitStruct.ClockType 		= RCC_CLOCKTYPE_HCLK|
@@ -73,10 +71,7 @@ static void SystemClock_Config(void)
 	RCC_ClkInitStruct.APB1CLKDivider 	= RCC_HCLK_DIV2;
 	RCC_ClkInitStruct.APB2CLKDivider 	= RCC_HCLK_DIV1;
 
-	if (HAL_RCC_ClockConfig(&RCC_ClkInitStruct, FLASH_LATENCY_2) != HAL_OK)
-	{
-		while(1);
-	}
+	ASSERT(HAL_RCC_ClockConfig(&RCC_ClkInitStruct, FLASH_LATENCY_2) != HAL_OK);
 }
 
 /* ----------------------------------------------------------------------------------- */
@@ -95,12 +90,22 @@ int main(void)
 	/* Configure the system clock */
 	SystemClock_Config();
 
-	InitializeMeasurements(MEASUREMENT_SRC_I2C);
+	LoggerInitialize();
 
+	measurement_source_t meas_src = MEASUREMENT_SRC_I2C;
+
+	LOG_INFO("Initializing measurements with %s peripheral\n",
+			(meas_src == MEASUREMENT_SRC_ADC) ? "ADC" : "I2C");
+
+	InitializeMeasurements(meas_src);
+
+	LOG_INFO("Initializing LCD display\n");
 	InitializeLCD();
 
 	while (1)
 	{
+		LOG_DBG("Starting measurements\n");
+
 		temperature = GetTemperature();
 		humidity 	= GetHumidity();
 
@@ -111,6 +116,9 @@ int main(void)
 
 		LCDWriteData(LCD_WRITE_UPPER_ROW, upper_lcd_row_buffer);
 		LCDWriteData(LCD_WRITE_LOWER_ROW, lower_lcd_row_buffer);
+
+		LOG_DBG("Temp: %.2f Cel\n", temperature);
+		LOG_DBG("Hum:  %.2f Pct\n", humidity);
 
 		HAL_Delay(2000);
 	}

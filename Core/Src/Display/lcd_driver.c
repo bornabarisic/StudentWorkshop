@@ -6,6 +6,7 @@
 
 #include "lcd_driver.h"
 #include "lcd_i2c.h"
+#include "log.h"
 
 /* ----------------------------------------------------------------------------------- */
 /* Defines --------------------------------------------------------------------------- */
@@ -69,46 +70,31 @@ static void InitializeLCD(void)
 	lcd_state = SendToLCD(LCD_MSG_TYPE_COMMAND, 0x01); /* Screen clear */
 	HAL_Delay(2);
 
-	if (lcd_state != LCD_OK)
-	{
-		while(1);
-	}
+	ASSERT(lcd_state != LCD_OK);
 
 	/* 8-bit bus, 2-line display, 5x8 dot format */
 	lcd_state = SendToLCD(LCD_MSG_TYPE_COMMAND, 0x38);
 	HAL_Delay(50);
 
-	if (lcd_state != LCD_OK)
-	{
-		while(1);
-	}
+	ASSERT(lcd_state != LCD_OK);
 
 	/* Display switch: Display on, cursor off, blink off */
 	lcd_state = SendToLCD(LCD_MSG_TYPE_COMMAND, 0x0C);
 	HAL_Delay(50);
 
-	if (lcd_state != LCD_OK)
-	{
-		while(1);
-	}
+	ASSERT(lcd_state != LCD_OK);
 
 	/* Entry mode : increment by 1, no display shift */
 	lcd_state = SendToLCD(LCD_MSG_TYPE_COMMAND, 0x06);
 	HAL_Delay(50);
 
-	if (lcd_state != LCD_OK)
-	{
-		while(1);
-	}
+	ASSERT(lcd_state != LCD_OK);
 
 	HAL_Delay(1000);
 
 	lcd_state = ClearLCD();
 
-	if (lcd_state != LCD_OK)
-	{
-		while(1);
-	}
+	ASSERT(lcd_state != LCD_OK);
 }
 
 /**
