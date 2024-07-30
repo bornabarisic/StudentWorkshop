@@ -9,6 +9,7 @@
 #include "measurement.h"
 #include "lcd_display.h"
 #include "log.h"
+#include "flash.h"
 
 /* ----------------------------------------------------------------------------------- */
 /* Defines --------------------------------------------------------------------------- */
@@ -102,6 +103,9 @@ int main(void)
 	LOG_INFO("Initializing LCD display\n");
 	InitializeLCD();
 
+	LOG_INFO("Read data from the flash\n");
+	FlashReadLogs();
+
 	while (1)
 	{
 		LOG_DBG("Starting measurements\n");
@@ -119,6 +123,8 @@ int main(void)
 
 		LOG_DBG("Temp: %.2f Cel\n", temperature);
 		LOG_DBG("Hum:  %.2f Pct\n", humidity);
+
+		FlashWriteLog(temperature);
 
 		HAL_Delay(2000);
 	}
